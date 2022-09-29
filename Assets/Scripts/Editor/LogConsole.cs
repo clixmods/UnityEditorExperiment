@@ -20,13 +20,18 @@ public class LogConsole : EditorWindow
        {
            Debug.Log(_message);
        }
-       
-       GUI.enabled = UnityEditor.Selection.activeObject != null;
-       if (GUILayout.Button("Send selected object name"))
+
+       using (new EditorGUI.DisabledScope(UnityEditor.Selection.activeObject == null))
        {
-           Debug.Log(UnityEditor.Selection.activeObject.name);
+           if (GUILayout.Button("Send selected object name"))
+           {
+               Debug.Log(UnityEditor.Selection.activeObject.name);
+           }
        }
-       GUI.enabled = true;
+
+      // GUI.enabled = UnityEditor.Selection.activeObject != null;
+     
+       // GUI.enabled = true;
        
     }
 }

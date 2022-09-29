@@ -9,6 +9,10 @@ public class StringComponent : MonoBehaviour
 
     //[Range()]
     [SerializeField][Scene] private int test = 0;
+
+    [SerializeField] [Scene] private string testStr= "bite";
+
+    [SerializeField] [Scene] private float testfloat = 1f;
     // Start is called before the first frame update
     void Start()
     {
