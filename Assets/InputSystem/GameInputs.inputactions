@@ -24,13 +24,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChargedShoot",
-                    "type": "Value",
-                    "id": "ed582a2a-995e-4980-a03b-be5e8bd06c4d",
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "d39b759c-c2c0-4388-bd3f-c9ddd76e1b34",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "692ab5f5-def2-4030-b184-db32e3c33a75",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -124,23 +133,45 @@
                 },
                 {
                     "name": "",
-                    "id": "6ce9bacb-6e14-4469-ba49-d4930a870493",
-                    "path": "<Gamepad>/rightTrigger",
+                    "id": "c45beda4-bb91-4755-b89f-a56e5518abe2",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
-                    "action": "ChargedShoot",
+                    "groups": "KeyboardMouse",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "07183f6f-3d0f-4b23-9199-25d646943c4f",
-                    "path": "",
+                    "id": "5d7d510a-6263-4bec-b84f-9c4042b36c7e",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "ChargedShoot",
+                    "groups": "Gamepad",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "728c5fba-8061-4d63-9970-5e993da091af",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "869ce633-2de7-41ed-8c6f-c9600b2b0db7",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
