@@ -1,12 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class UIMenu : MonoBehaviour
 {
+    static UIMenu _activeMenu;
+    public static UIMenu ActiveMenu
+    {
+        get { return _activeMenu; }
+    }
+    
     [SerializeField] private GameObject _firstSelectedGameObject;
     private GameObject _previousMenu;
 
@@ -25,9 +33,10 @@ public class UIMenu : MonoBehaviour
     private void OnEnable()
     {
         EventSystem.current.SetSelectedGameObject(_firstSelectedGameObject);
-        
+        _activeMenu = this;
     }
 
+   
     public void OpenMenu(GameObject previousMenu)
     {
         _previousMenu = previousMenu;
@@ -35,24 +44,25 @@ public class UIMenu : MonoBehaviour
         gameObject.SetActive(true);
         _isOpen = true;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public static void CloseMenu()
     {
-        if (Gamepad.current.buttonEast.wasPressedThisFrame) 
+        if (_activeMenu == null) return;
+        
+        Debug.Log("CloseMenu");
+        // The top menu
+        if (_activeMenu._previousMenu == null)
         {
-            // The top menu
-            if (_previousMenu == null)
-            {
-                _isOpen = false;
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                _previousMenu.SetActive(true);
-                gameObject.SetActive(false);
-                
-            }
+            _activeMenu._isOpen = false;
+            _activeMenu.gameObject.SetActive(false);
+            _activeMenu = null;
+            
+        }
+        else
+        {
+            _activeMenu.gameObject.SetActive(false);
+            _activeMenu._previousMenu.SetActive(true);
         }
     }
+    
 }
