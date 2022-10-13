@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UIMenu : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class UIMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Gamepad.current.buttonEast.wasPressedThisFrame) 
         {
             // The top menu
             if (_previousMenu == null)

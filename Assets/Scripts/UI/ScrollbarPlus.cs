@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ScrollRect))]
 public class ScrollbarPlus : MonoBehaviour
 {
     private ScrollRect _scrollRect;
@@ -18,7 +19,7 @@ public class ScrollbarPlus : MonoBehaviour
     {
         for(int i = 0 ; i < _scrollRect.content.childCount ; i++)
         {
-            Transform child = _scrollRect.content.GetChild(i); //.GetChild(i);
+            Transform child = _scrollRect.content.GetChild(i); 
             if (child == EventSystem.current.currentSelectedGameObject.transform)
             {
                 float scrollSize = _scrollRect.verticalScrollbar.size;

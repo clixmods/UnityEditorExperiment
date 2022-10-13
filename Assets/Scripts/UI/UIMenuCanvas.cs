@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class UIMenuCanvas : MonoBehaviour
@@ -30,7 +31,7 @@ public class UIMenuCanvas : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Escape) )
+        if (Gamepad.current.buttonEast.wasPressedThisFrame) 
         {
             if(!_menuGameObject.IsOpen)
                 _menuGameObject.gameObject.SetActive(true);
