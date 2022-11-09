@@ -9,60 +9,45 @@ using UnityEngine.InputSystem.UI;
 
 public class UIMenu : MonoBehaviour
 {
-    static UIMenu _activeMenu;
-    public static UIMenu ActiveMenu
-    {
-        get { return _activeMenu; }
-    }
-    
+    public static UIMenu ActiveMenu { get; private set; }
     [SerializeField] private GameObject _firstSelectedGameObject;
     private GameObject _previousMenu;
-
-    private bool _isOpen = false;
-    public bool IsOpen {
-        get { return _isOpen; }
-    }
-    
+    public bool IsOpen { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
         gameObject.SetActive(false);
-            
     }
 
     private void OnEnable()
     {
         EventSystem.current.SetSelectedGameObject(_firstSelectedGameObject);
-        _activeMenu = this;
+        ActiveMenu = this;
     }
-
-   
     public void OpenMenu(GameObject previousMenu)
     {
         _previousMenu = previousMenu;
         _previousMenu.SetActive(false);
         gameObject.SetActive(true);
-        _isOpen = true;
+        IsOpen = true;
     }
-    
     public static void CloseMenu()
     {
-        if (_activeMenu == null) return;
-        
+        if (ActiveMenu == null) 
+            return;
+
         Debug.Log("CloseMenu");
         // The top menu
-        if (_activeMenu._previousMenu == null)
+        if (ActiveMenu._previousMenu == null)
         {
-            _activeMenu._isOpen = false;
-            _activeMenu.gameObject.SetActive(false);
-            _activeMenu = null;
-            
+            ActiveMenu.IsOpen = false;
+            ActiveMenu.gameObject.SetActive(false);
+            ActiveMenu = null;
         }
         else
         {
-            _activeMenu.gameObject.SetActive(false);
-            _activeMenu._previousMenu.SetActive(true);
+            ActiveMenu.gameObject.SetActive(false);
+            ActiveMenu._previousMenu.SetActive(true);
         }
     }
-    
 }
