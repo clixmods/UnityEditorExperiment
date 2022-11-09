@@ -6,31 +6,25 @@ using UnityEngine;
 public class DrawCircle : MonoBehaviour
 {
     private const float PI = 3.14f;
-        
-    [Range(1,360)]
-    [SerializeField] private float radius = 2;
-    [Range(2,30)]
-    [SerializeField] private int resolution = 5;
-    [SerializeField] private Transform targetPoint;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
+    [Range(1,360),SerializeField] private float radius = 2;
+    [Range(2,30),SerializeField] private int resolution = 5;
+    [SerializeField] private Transform targetPoint;
+    [SerializeField] private float _distance; 
+
+    private float Distance(Vector2 a, Vector2 b)
+    {
+        return (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
+
+    }
     private void OnDrawGizmos()
     {
         if (targetPoint != null)
         {
             Vector3 point = new Vector3(targetPoint.position.x, targetPoint.position.y, 0);    
             Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
-            if ((point - pointCircle).magnitude < radius)
+            _distance = Distance(pointCircle, point);
+            if ( _distance < radius* radius)
             {
                 Draw(Color.green);
             }
