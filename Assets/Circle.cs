@@ -3,14 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawCircle : MonoBehaviour
+public enum Collision
+{
+    Point,
+    Circle
+}
+public class Circle : MonoBehaviour
 {
     private const float PI = 3.14f;
-    
+
+    [SerializeField] private Collision collisionType;
     [Range(1,360),SerializeField] private float radius = 2;
     [Range(2,30),SerializeField] private int resolution = 5;
     [SerializeField] private Transform targetPoint;
-    [SerializeField] private float _distance; 
+    [SerializeField] private Circle targetCircle;
+    private float _distance;
+
+    public float Radius => radius;
+    
 
     private float Distance(Vector2 a, Vector2 b)
     {
@@ -19,12 +29,28 @@ public class DrawCircle : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
+        switch (collisionType)
+        {
+            case Collision.Point:
+                WatchCollisionWithPoint();
+                break;
+            case Collision.Circle:
+                WatchCollisionWithCircle();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+      
+    }
+
+    private void WatchCollisionWithPoint()
+    {
         if (targetPoint != null)
         {
-            Vector3 point = new Vector3(targetPoint.position.x, targetPoint.position.y, 0);    
+            Vector3 point = new Vector3(targetPoint.position.x, targetPoint.position.y, 0);
             Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
             _distance = Distance(pointCircle, point);
-            if ( _distance < radius* radius)
+            if (_distance < radius * radius)
             {
                 Draw(Color.green);
             }
@@ -37,8 +63,30 @@ public class DrawCircle : MonoBehaviour
         {
             Draw(Color.white);
         }
-       
     }
+    
+    private void WatchCollisionWithCircle()
+    {
+        if (targetCircle != null)
+        {
+            Vector3 point = new Vector3(targetCircle.transform.position.x, targetCircle.transform.position.y, 0);
+            Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
+            _distance = Distance(pointCircle, point);
+            if (_distance < (radius  +  targetCircle.radius ) * (radius  +  targetCircle.radius ) )
+            {
+                Draw(Color.green);
+            }
+            else
+            {
+                Draw(Color.white);
+            }
+        }
+        else
+        {
+            Draw(Color.white);
+        }
+    }
+
     /// <summary>
     /// Draw a circle 
     /// </summary>
