@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class UIMenuCanvas : MonoBehaviour
 {
     [FormerlySerializedAs("Escape Menu")] 
     [SerializeField] private UIMenu _menuGameObject;
-
-    [SerializeField] private HashSet<GameObject> _previousMenu;
+    //[SerializeField] private HashSet<GameObject> _previousMenu;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,20 +22,14 @@ public class UIMenuCanvas : MonoBehaviour
        
     }
 
-    public void SetPreviousMenu(GameObject previousMenu)
-    {
-        _previousMenu.Add(previousMenu); //= previousMenu;
-    }
+    // public void SetPreviousMenu(GameObject previousMenu)
+    // {
+    //     _previousMenu.Add(previousMenu); 
+    // }
 
-    // Update is called once per frame
-    void Update()
+    public void OpenMenu()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Escape) )
-        {
-            if(!_menuGameObject.IsOpen)
-                _menuGameObject.gameObject.SetActive(true);
-         
-        }
+        if(!_menuGameObject.IsOpen)
+            _menuGameObject.gameObject.SetActive(true);
     }
 }
