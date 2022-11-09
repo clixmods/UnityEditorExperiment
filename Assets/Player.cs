@@ -75,7 +75,15 @@ public class Player : MonoBehaviour
 
     public void OnCancel(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Started) UIMenu.CloseMenu();
-        if(UIMenu.ActiveMenu == null) _playerInput.SwitchCurrentActionMap("Game");
+        if (context.phase == InputActionPhase.Started)
+        {
+            UIMenu.CloseMenu();
+        }
+
+        if (UIMenu.ActiveMenu == null)
+        {
+            _playerInput.SwitchCurrentActionMap("Game");
+        }
+            
     }
 }
