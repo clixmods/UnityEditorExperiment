@@ -32,48 +32,60 @@ public class CameraVision : MonoBehaviour
     private void OnDrawGizmos()
     {
         float cameraFov = _camera.fieldOfView;
-        float angleA = cameraFov / 2f;
-        float angleB = -angleA;
-       
-        float distance = _camera.farClipPlane ;
-        var i = (angleA / 360 ) *  (2 * 3.14f) ;
-        var endA = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0) * distance;
-        var y = (angleB / 360 ) *  (2 * 3.14f) ;
-        var endB = new Vector3(Mathf.Cos(y), Mathf.Sin(y), 0) * distance;
-        
+        float angleA = cameraFov/2f;
 
-        Vector3 directionA = transform.TransformPoint(endB) - transform.position;
-        Vector3 directionB = transform.TransformPoint(endA) - transform.position;
+        var cameraPosition = transform.position;
         
+        // Distance perce
+        float distance = _camera.farClipPlane ;
+
+        var endA = new Vector3(Mathf.Cos(angleA* (Mathf.PI / 180) ), Mathf.Sin(angleA* (Mathf.PI / 180))) * distance;
+        var endB = new Vector3(Mathf.Cos(-angleA* (Mathf.PI / 180) ), Mathf.Sin(-angleA* (Mathf.PI / 180))) * distance;
+        
+        Vector3 directionA = transform.TransformPoint(endB) - cameraPosition;
+        Vector3 directionB = transform.TransformPoint(endA) - cameraPosition;
         
         directionA =  Quaternion.Euler(offset) * directionA;
         directionB =  Quaternion.Euler(offset) * directionB;
         
-        Vector3 directionObject = objectTarget.transform.position - transform.position;
-        Debug.DrawRay(transform.position, directionA);
-        Debug.DrawRay(transform.position, directionB);
+      
+        Debug.DrawRay(cameraPosition, directionA);
+        Debug.DrawRay(cameraPosition, directionB);
+
+        Vector3 directionObject = objectTarget.transform.position - cameraPosition;
 
         bool isGoodDistance = directionObject.magnitude < distance;
-        var dotA = Vector3.Dot(directionA.normalized, directionObject.normalized);
-        dotA -= cameraFov/180f;
-        Handles.Label(endA+ transform.position, dotA.ToString());
-        var dotB = Vector3.Dot(directionB.normalized, directionObject.normalized);
-        dotB -= cameraFov/180f;
-        Handles.Label(endB+ transform.position, dotB.ToString());
+        
+        var dotA = Vector3.Dot(directionA, directionObject);
+        dotA =  Mathf.Acos(dotA / (directionA.magnitude*directionObject.magnitude));
+        dotA *= 180f/Mathf.PI;
+        dotA = MathF.Round(dotA, 2);
+        Handles.Label(endA + cameraPosition, dotA.ToString());
+     
+        var dotB = Vector3.Dot(directionB, directionObject);
+        dotB =  Mathf.Acos(dotB / (directionB.magnitude*directionObject.magnitude));
+        dotB  *= 180f/Mathf.PI;
+        dotB = MathF.Round(dotB, 2);
+        Handles.Label(endB + cameraPosition, dotB.ToString());
         
         
-        
-        if ( isGoodDistance && dotA >= 0.5f && dotB  >= 0.5f && dotA + dotB  <= 2 )
+        var dotAddition = dotA + dotB;
+        dotAddition = MathF.Round(dotAddition, 2);
+        Debug.Log( "ADDTION VALUE DOT : "+dotAddition );
+        if ( isGoodDistance &&  dotAddition <= cameraFov )
         {
-            Debug.DrawRay(transform.position, directionObject,Color.green);
+            Debug.DrawRay(cameraPosition, directionObject,Color.green);
         }
         else
         {
-            Debug.DrawRay(transform.position, directionObject,Color.yellow);
+            if (!isGoodDistance)
+            {
+                directionObject = directionObject /  ( (directionObject.magnitude / distance) );
+                objectTarget.transform.position = directionObject + cameraPosition;
+            }
+            //objectTarget.transform.position = new Vector3(MathF.Cos(dotA), MathF.Sin(dotA))*distance;
+            Debug.DrawRay(cameraPosition, directionObject,Color.yellow);
         }
-        Debug.Log("DOT A :"+dotA );
-        Debug.Log("DOT B :"+dotB);
-        
-        
+
     }
 }
