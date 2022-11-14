@@ -8,19 +8,21 @@ public enum Collision
     Point,
     Circle
 }
-public class Circle : MonoBehaviour
+public class ShapeGenerator : MonoBehaviour
 {
     private const float PI = 3.14f;
 
     [SerializeField] private Collision collisionType;
     [Range(1,360),SerializeField] private float radius = 2;
     [Range(2,30),SerializeField] private int resolution = 5;
+    [Range(2,30),SerializeField] private int density = 2;
+
     [SerializeField] private Transform targetPoint;
-    [SerializeField] private Circle targetCircle;
+    [SerializeField] private ShapeGenerator targetShapeGenerator;
     private float _distance;
 
     public float Radius => radius;
-    
+    public Vector3 Position => transform.position;
 
     private float Distance(Vector2 a, Vector2 b)
     {
@@ -67,12 +69,12 @@ public class Circle : MonoBehaviour
     
     private void WatchCollisionWithCircle()
     {
-        if (targetCircle != null)
+        if (targetShapeGenerator != null)
         {
-            Vector3 point = new Vector3(targetCircle.transform.position.x, targetCircle.transform.position.y, 0);
+            Vector3 point = new Vector3(targetShapeGenerator.Position.x, targetShapeGenerator.Position.y, 0);
             Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
             _distance = Distance(pointCircle, point);
-            if (_distance < (radius  +  targetCircle.radius ) * (radius  +  targetCircle.radius ) )
+            if (_distance < (radius  +  targetShapeGenerator.radius ) * (radius  +  targetShapeGenerator.radius ) )
             {
                 Draw(Color.green);
             }
@@ -114,5 +116,12 @@ public class Circle : MonoBehaviour
         }
 
         Debug.DrawLine(points[^1], points[0] , color);
+
+        //Cela doit donner comme résultat, par exemple pour un densité égale à 2, avec 5 vertices de dessiner un pentagramme et avec 6 vertices un hexagramme.
+        // Draw vertices
+        for (int i = 0; i < points.Length ; i++)
+        {
+            Debug.DrawLine(points[i], points[(i + density) % points.Length] , color);
+        }
     }
 }
