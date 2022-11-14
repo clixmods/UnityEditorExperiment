@@ -54,7 +54,10 @@ public class CameraVision : MonoBehaviour
 
         Vector3 directionObject = objectTarget.transform.position - cameraPosition;
 
-        bool isGoodDistance = directionObject.magnitude < distance;
+         float targetHypothenuse = distance / MathF.Cos(angleA);
+     
+        
+        Handles.Label(objectTarget.transform.position, directionObject.magnitude.ToString());
         
         var dotA = Vector3.Dot(directionA, directionObject);
         dotA =  Mathf.Acos(dotA / (directionA.magnitude*directionObject.magnitude));
@@ -67,12 +70,29 @@ public class CameraVision : MonoBehaviour
         dotB  *= 180f/Mathf.PI;
         dotB = MathF.Round(dotB, 2);
         Handles.Label(endB + cameraPosition, dotB.ToString());
+        float Hypothenuse;
+        if (dotA < dotB)
+        {
+            float cosinus = MathF.Cos((angleA - dotA )* MathF.PI/180 );
+            Hypothenuse = distance / cosinus ;
+            targetHypothenuse = distance / MathF.Cos(angleA* (Mathf.PI / 180));
+        }
+        else
+        {
+            Hypothenuse = distance / MathF.Cos((angleA - dotB)* MathF.PI/180);
+            targetHypothenuse = distance / MathF.Cos(-angleA* (Mathf.PI / 180));
+        }
         
+         
+        Debug.Log("targetHypothenuse "+Hypothenuse);
+        Debug.Log(directionObject.magnitude / Hypothenuse);
+        
+        bool isGoodDistance = directionObject.magnitude <= Hypothenuse;
         
         var dotAddition = dotA + dotB;
         dotAddition = MathF.Round(dotAddition, 2);
         Debug.Log( "ADDTION VALUE DOT : "+dotAddition );
-        if ( isGoodDistance &&  dotAddition <= cameraFov )
+        if (  dotAddition <= cameraFov &&  isGoodDistance)
         {
             Debug.DrawRay(cameraPosition, directionObject,Color.green);
         }
@@ -80,8 +100,8 @@ public class CameraVision : MonoBehaviour
         {
             if (!isGoodDistance)
             {
-                directionObject = directionObject /  ( (directionObject.magnitude / distance) );
-                objectTarget.transform.position = directionObject + cameraPosition;
+               // directionObject = directionObject /  ( (directionObject.magnitude / distance) );
+               // objectTarget.transform.position = directionObject + cameraPosition;
             }
             //objectTarget.transform.position = new Vector3(MathF.Cos(dotA), MathF.Sin(dotA))*distance;
             Debug.DrawRay(cameraPosition, directionObject,Color.yellow);
