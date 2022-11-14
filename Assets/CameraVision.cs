@@ -39,14 +39,19 @@ public class CameraVision : MonoBehaviour
         // Distance perce
         float distance = _camera.farClipPlane ;
 
-        var endA = new Vector3(Mathf.Cos(angleA* (Mathf.PI / 180) ), Mathf.Sin(angleA* (Mathf.PI / 180))) * distance;
-        var endB = new Vector3(Mathf.Cos(-angleA* (Mathf.PI / 180) ), Mathf.Sin(-angleA* (Mathf.PI / 180))) * distance;
+        float fA = angleA * (Mathf.PI / 180);
+        var endA = new Vector3(Mathf.Cos( fA), Mathf.Sin(fA ),Mathf.Tan(fA ) )  * distance;
+
+        float fB = -angleA * (Mathf.PI / 180);
+        var endB = new Vector3(Mathf.Cos(fB ), Mathf.Sin(fB) ,Mathf.Tan(fB) ) * distance;
         
-        Vector3 directionA = transform.TransformPoint(endB) - cameraPosition;
-        Vector3 directionB = transform.TransformPoint(endA) - cameraPosition;
         
-        directionA =  Quaternion.Euler(offset) * directionA;
-        directionB =  Quaternion.Euler(offset) * directionB;
+        
+        Vector3 directionA = transform.TransformPoint (endB) - cameraPosition;
+        Vector3 directionB = transform.TransformPoint (endA) - cameraPosition;
+        
+        directionA =  transform.rotation.eulerAngles + directionA;
+        directionB =  transform.rotation.eulerAngles + directionB;
         
       
         Debug.DrawRay(cameraPosition, directionA);
