@@ -8,51 +8,72 @@ public enum Collision
     Point,
     Circle
 }
-public class ShapeGenerator : MonoBehaviour
+public class ShapeDrawer : MonoBehaviour
 {
+    /// <summary>
+    /// Constant of PI, cached here to not use Mathf class
+    /// </summary>
     private const float PI = 3.14f;
-
-    [SerializeField] private Collision collisionType;
+    
+   
+    /// <summary>
+    /// Size of the shape, also the distance between the origin and the edge of the shape.
+    /// </summary>
+    [Header("Shape")]
     [Range(1,360),SerializeField] private float radius = 2;
+    /// <summary>
+    /// Size of the shape
+    /// </summary>
     [Range(2,30),SerializeField] private int resolution = 5;
+    /// <summary>
+    /// Density of vertices in the shape
+    /// </summary>
     [Range(2,30),SerializeField] private int density = 2;
 
+    [Header("Collision")]
+    [SerializeField] private Collision collisionType;
     [SerializeField] private Transform targetPoint;
-    [SerializeField] private ShapeGenerator targetShapeGenerator;
-    private float _distance;
+    [SerializeField] private ShapeDrawer targetShapeDrawer;
+
+    #region Properties
 
     public float Radius => radius;
     public Vector3 Position => transform.position;
+
+    #endregion
 
     private float Distance(Vector2 a, Vector2 b)
     {
         return (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
 
     }
+
+#if UNITY_EDITOR
     private void OnDrawGizmos()
+    {
+        WatchCollision();
+    }
+    
+    private float MaxDistance()
     {
         switch (collisionType)
         {
             case Collision.Point:
-                WatchCollisionWithPoint();
-                break;
+                return radius * radius;
             case Collision.Circle:
-                WatchCollisionWithCircle();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+                return (radius + targetShapeDrawer.radius) * (radius + targetShapeDrawer.radius);
         }
-      
-    }
 
-    private void WatchCollisionWithPoint()
+        return 0;
+    }
+    private void WatchCollision()
     {
         if (targetPoint != null)
         {
             Vector3 point = new Vector3(targetPoint.position.x, targetPoint.position.y, 0);
             Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
-            _distance = Distance(pointCircle, point);
-            if (_distance < radius * radius)
+            float distance = Distance(pointCircle, point);
+            if (distance < MaxDistance())
             {
                 Draw(Color.green);
             }
@@ -67,32 +88,11 @@ public class ShapeGenerator : MonoBehaviour
         }
     }
     
-    private void WatchCollisionWithCircle()
-    {
-        if (targetShapeGenerator != null)
-        {
-            Vector3 point = new Vector3(targetShapeGenerator.Position.x, targetShapeGenerator.Position.y, 0);
-            Vector3 pointCircle = new Vector3(transform.position.x, transform.position.y, 0);
-            _distance = Distance(pointCircle, point);
-            if (_distance < (radius  +  targetShapeGenerator.radius ) * (radius  +  targetShapeGenerator.radius ) )
-            {
-                Draw(Color.green);
-            }
-            else
-            {
-                Draw(Color.white);
-            }
-        }
-        else
-        {
-            Draw(Color.white);
-        }
-    }
 
     /// <summary>
-    /// Draw a circle 
+    /// Draw the shape 
     /// </summary>
-    /// <param name="color"> Select a color to draw</param>
+    /// <param name="color">Select a color to draw</param>
     private void Draw(Color color)
     {
         Vector3 ogPosition = transform.position;
@@ -117,11 +117,12 @@ public class ShapeGenerator : MonoBehaviour
 
         Debug.DrawLine(points[^1], points[0] , color);
 
-        //Cela doit donner comme résultat, par exemple pour un densité égale à 2, avec 5 vertices de dessiner un pentagramme et avec 6 vertices un hexagramme.
+     
         // Draw vertices
         for (int i = 0; i < points.Length ; i++)
         {
             Debug.DrawLine(points[i], points[(i + density) % points.Length] , color);
         }
     }
+    #endif
 }

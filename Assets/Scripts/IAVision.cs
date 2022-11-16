@@ -51,27 +51,26 @@ public class IAVision : MonoBehaviour
         //
         Debug.DrawLine(transform.position,transform.TransformPoint(transformRight* radius)  );
 
-        Vector3 tamere;
+        Vector3 endPosition;
         float i;
         switch (typeCalcul)
         {
             case LimitVisionType.ZeroToOne:
                 i = limitVision * (2 * 3.14f);
-                tamere = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0);
+                endPosition = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0);
                 break;
             case LimitVisionType.Angle:
                 i = (limitVision / 360 ) *  (2 * 3.14f) ;
-                tamere = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
         
         
+        endPosition = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0);
         
         
-        
-        Debug.DrawLine(transform.position,transform.TransformPoint((tamere)* radius )   );
+        Debug.DrawLine(transform.position,transform.TransformPoint((endPosition)* radius )   );
         //
         //
         

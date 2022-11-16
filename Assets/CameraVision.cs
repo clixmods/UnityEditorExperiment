@@ -40,18 +40,18 @@ public class CameraVision : MonoBehaviour
         float distance = _camera.farClipPlane ;
 
         float fA = angleA * (Mathf.PI / 180);
-        var endA = new Vector3(Mathf.Cos( fA), Mathf.Sin(fA ),Mathf.Tan(fA ) )  * distance;
+        var endA = new Vector3(Mathf.Cos( fA), Mathf.Sin(fA ),0)  * distance;
 
         float fB = -angleA * (Mathf.PI / 180);
-        var endB = new Vector3(Mathf.Cos(fB ), Mathf.Sin(fB) ,Mathf.Tan(fB) ) * distance;
+        var endB = new Vector3(Mathf.Cos(fB ), Mathf.Sin(fB) ,0 ) * distance;
         
         
         
         Vector3 directionA = transform.TransformPoint (endB) - cameraPosition;
         Vector3 directionB = transform.TransformPoint (endA) - cameraPosition;
         
-        directionA =  transform.rotation.eulerAngles + directionA;
-        directionB =  transform.rotation.eulerAngles + directionB;
+        directionA =  Quaternion.Euler(offset) * directionA;
+        directionB =  Quaternion.Euler(offset) * directionB;
         
       
         Debug.DrawRay(cameraPosition, directionA);
@@ -94,7 +94,7 @@ public class CameraVision : MonoBehaviour
         
         bool isGoodDistance = directionObject.magnitude <= Hypothenuse;
         
-        var dotAddition = dotA + dotB;
+        double dotAddition = dotA + dotB;
         dotAddition = MathF.Round(dotAddition, 2);
         Debug.Log( "ADDTION VALUE DOT : "+dotAddition );
         if (  dotAddition <= cameraFov &&  isGoodDistance)
