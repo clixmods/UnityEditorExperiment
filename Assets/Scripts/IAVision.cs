@@ -46,9 +46,6 @@ public class IAVision : MonoBehaviour
             transformRight = transform.right;
             transformUp = transform.up;
         }
-
-        // // Vector3 arf = new Vector3(Mathf.Cos(limitVision), MathF.Sin(limitVision));
-        //
         Debug.DrawLine(transform.position,transform.TransformPoint(transformRight* radius)  );
 
         Vector3 endPosition;
@@ -56,11 +53,11 @@ public class IAVision : MonoBehaviour
         switch (typeCalcul)
         {
             case LimitVisionType.ZeroToOne:
-                i = limitVision * (2 * 3.14f);
+                i = (limitVision * (2 * 3.14f) )/2f;
                 endPosition = new Vector3(Mathf.Cos(i), Mathf.Sin(i), 0);
                 break;
             case LimitVisionType.Angle:
-                i = (limitVision / 360 ) *  (2 * 3.14f) ;
+                i = ((limitVision / 360 ) *  (2 * 3.14f) ); 
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

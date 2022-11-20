@@ -134,12 +134,12 @@ GameObject:
   - component: {fileID: 204364838}
   - component: {fileID: 204364837}
   m_Layer: 0
-  m_Name: DrawCircle
+  m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &204364837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,12 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d20e017db958748a9b13a9bddcbb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionType: 1
   radius: 20
   resolution: 10
   density: 2
+  collisionType: 0
   targetPoint: {fileID: 1301257009}
-  targetShapeGenerator: {fileID: 0}
 --- !u!4 &204364838
 Transform:
   m_ObjectHideFlags: 0
@@ -166,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204364836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.8, y: 4, z: 0}
+  m_LocalPosition: {x: 11.44, y: 4.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -300,8 +299,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 7.45
-  typeCalcul: 1
-  limitVision: 180
+  typeCalcul: 0
+  limitVision: 1
   manual: 0
   transformUp: {x: 0, y: 1, z: 0}
   transformRight: {x: 1, y: 0, z: 0}
@@ -313,7 +312,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098987023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.28, y: -5.07, z: 0}
+  m_LocalPosition: {x: -20.28, y: -1.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -459,7 +458,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301257008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9, y: -7.9, z: 0}
+  m_LocalPosition: {x: 29.01, y: 15.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +476,7 @@ GameObject:
   - component: {fileID: 1610163702}
   - component: {fileID: 1610163701}
   m_Layer: 0
-  m_Name: DrawCircle (1)
+  m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -495,12 +494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d20e017db958748a9b13a9bddcbb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionType: 1
   radius: 6
   resolution: 30
   density: 11
+  collisionType: 0
   targetPoint: {fileID: 1301257009}
-  targetShapeGenerator: {fileID: 0}
 --- !u!4 &1610163702
 Transform:
   m_ObjectHideFlags: 0
@@ -509,7 +507,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610163700}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 34.26, y: 19.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
