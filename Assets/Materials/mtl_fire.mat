@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mtl_fire
+  m_Shader: {fileID: 4800000, guid: 84a3aa85564b69b4c99be75591c80552, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 0ed292c8a94374745a278592ec5f0fd8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _SpeedScroll: 0.1
+    m_Colors:
+    - _EmissiveColor: {r: 1, g: 0.39937493, b: 0, a: 1}
+    - _EmissiveEdgeColor: {r: 1.9766746, g: 1.8317873, b: 0, a: 1}
+    - _EmissiveSecondaryColor: {r: 0.57434916, g: 0.096851036, b: 0, a: 1}
+  m_BuildTextureStacks: []
