@@ -1,11 +1,10 @@
 
-Shader "Example/LitEmissiveScroll"
+Shader "Example/UnlitBobbing"
 {
     // The properties block of the Unity shader.
     Properties
     { 
         [HDR] _BaseColor("BaseColor", Color) = (1, 1, 1, 1) 
-        [MainTexture] _BaseMap("BaseMap", 2D) = "white"
         _SpeedBobbing("Size Bobbing", Float) = 0.0
     }
 
@@ -31,8 +30,7 @@ Shader "Example/LitEmissiveScroll"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
 
-            TEXTURE2D(_BaseMap);
-            SAMPLER(sampler_BaseMap);
+  
             
             // The structure definition defines which variables it contains.
             // This example uses the Attributes structure as an input structure in
@@ -53,7 +51,6 @@ Shader "Example/LitEmissiveScroll"
             };
 
             CBUFFER_START(UnityPerMaterial)
-                float4 _BaseMap_ST;
                 half4 _BaseColor;
                 float _SpeedBobbing;
             CBUFFER_END

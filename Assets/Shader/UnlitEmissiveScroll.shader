@@ -1,5 +1,5 @@
 
-Shader "Example/LitEmissiveScroll"
+Shader "Example/UnlitEmissiveScroll"
 {
     // The properties block of the Unity shader.
     Properties
