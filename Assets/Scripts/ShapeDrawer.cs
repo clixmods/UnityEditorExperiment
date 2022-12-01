@@ -35,7 +35,7 @@ public class ShapeDrawer : MonoBehaviour
     [Header("Collision")] [SerializeField] private Collision collisionType;
     [SerializeField] private Transform targetPoint;
     private ShapeDrawer _targetShapeDrawer;
-    
+
     public float Radius => radius;
     public Vector3 Position => transform.position;
 
@@ -58,11 +58,12 @@ public class ShapeDrawer : MonoBehaviour
     {
         WatchCollision();
     }
+
     private float Distance(Vector2 a, Vector2 b)
     {
         return (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
     }
-   
+
 
     private float MaxDistance()
     {
@@ -74,8 +75,8 @@ public class ShapeDrawer : MonoBehaviour
             {
                 return (radius + _targetShapeDrawer.radius) * (radius + _targetShapeDrawer.radius);
             }
-                
         }
+
         return 0;
     }
 
@@ -115,6 +116,7 @@ public class ShapeDrawer : MonoBehaviour
         {
             pointsAmount++;
         }
+
         Vector3[] points = new Vector3[pointsAmount];
         int index = 0;
         for (float i = 0; i < 2 * PI; i += step)
@@ -124,17 +126,19 @@ public class ShapeDrawer : MonoBehaviour
             points[index] = new Vector3(x, y, 0);
             index++;
         }
+
         // Draw each line of the shape
         for (int i = 0; i < points.Length - 1; i++)
         {
-            Debug.DrawLine(points[i], points[i + 1] , color);
+            Debug.DrawLine(points[i], points[i + 1], color);
         }
-        Debug.DrawLine(points[^1], points[0] , color);
+
+        Debug.DrawLine(points[^1], points[0], color);
         // Draw vertices
-        for (int i = 0; i < points.Length ; i++)
+        for (int i = 0; i < points.Length; i++)
         {
-            Debug.DrawLine(points[i], points[(i + density) % points.Length] , color);
+            Debug.DrawLine(points[i], points[(i + density) % points.Length], color);
         }
     }
-    #endif
+#endif
 }
