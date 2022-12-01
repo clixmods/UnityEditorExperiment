@@ -9,6 +9,7 @@ public class EventListener : MonoBehaviour
     [SerializeField] private UnityEvent _OnTriggerInvoked;
     private void Start()
     {
+        _eventHandler.eventDamage += protect;
         _eventHandler.eventDamage += Decrement;
         _eventHandler.eventDamage += Divide;
     }
@@ -24,5 +25,10 @@ public class EventListener : MonoBehaviour
         amount /= 2;
         Debug.Log(amount);
         //return amount;
+    }
+
+    void protect(ref int amount)
+    {
+        amount /= 6;
     }
 }
