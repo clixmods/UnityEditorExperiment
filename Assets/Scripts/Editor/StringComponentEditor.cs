@@ -30,19 +30,19 @@ public class StringComponentEditor : Editor
         property.intValue = Mathf.Clamp(property.intValue, 0, scenesLength);
         
         EditorGUILayout.EndHorizontal();
-        var propertyStats = serializedObject.FindProperty("_stats");
-        int healthValue = propertyStats.FindPropertyRelative("Health").intValue;
-        int maxhealthValue = propertyStats.FindPropertyRelative("maxhealth").intValue;
-        int manaValue = propertyStats.FindPropertyRelative("Mana").intValue;
-        int maxmanaValue = propertyStats.FindPropertyRelative("maxmana").intValue;
-        Rect rHealth = EditorGUILayout.BeginVertical();
-        EditorGUI.ProgressBar(rHealth, (float)healthValue/(float)maxhealthValue , $"{healthValue}/{maxhealthValue}" );
-        GUILayout.Space(16);
-        EditorGUILayout.EndVertical();
-        Rect rMana = EditorGUILayout.BeginVertical();
-        EditorGUI.ProgressBar(rMana, (float)manaValue/(float)maxmanaValue , $"{manaValue}/{maxmanaValue}" );
-        GUILayout.Space(16);
-        EditorGUILayout.EndVertical();
+        // var propertyStats = serializedObject.FindProperty("_stats");
+        // int healthValue = propertyStats.FindPropertyRelative("Health").intValue;
+        // int maxhealthValue = propertyStats.FindPropertyRelative("maxhealth").intValue;
+        // int manaValue = propertyStats.FindPropertyRelative("Mana").intValue;
+        // int maxmanaValue = propertyStats.FindPropertyRelative("maxmana").intValue;
+        // Rect rHealth = EditorGUILayout.BeginVertical();
+        // EditorGUI.ProgressBar(rHealth, (float)healthValue/(float)maxhealthValue , $"{healthValue}/{maxhealthValue}" );
+        // GUILayout.Space(16);
+        // EditorGUILayout.EndVertical();
+        // Rect rMana = EditorGUILayout.BeginVertical();
+        // EditorGUI.ProgressBar(rMana, (float)manaValue/(float)maxmanaValue , $"{manaValue}/{maxmanaValue}" );
+        // GUILayout.Space(16);
+        // EditorGUILayout.EndVertical();
         serializedObject.ApplyModifiedProperties();
     }
 }

@@ -43,7 +43,7 @@ public class CameraZoneTriggerEditor : Editor
         {
             _boxCollider.center = _box.center;
             _boxCollider.size = _box.size;
-             _box.DrawHandle();
+            _box.DrawHandle();
         }
     }
 }

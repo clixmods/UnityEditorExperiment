@@ -21,7 +21,7 @@ namespace ScriptableEvent
     public abstract class ScriptableEvent<T> : ScriptableObject
     {
         public event Action<T> Event;
-
+        
         public void LaunchEvent(T value)
         {
             Event?.Invoke(value);
