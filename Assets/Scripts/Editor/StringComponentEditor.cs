@@ -7,42 +7,47 @@ using UnityEngine.SocialPlatforms;
 [CustomEditor(typeof(StringComponent))]
 public class StringComponentEditor : Editor
 {
+    private SerializedProperty PSceneInt { get; set; }
+    private SerializedProperty PSceneString { get; set; }
+    private SerializedProperty PMyBeautifulString { get; set; }
+    private SerializedProperty PStats { get; set; }
+    public void OnEnable()
+    {
+        PSceneInt = serializedObject.FindProperty("sceneInt");
+        PSceneString = serializedObject.FindProperty("sceneString");
+        PMyBeautifulString = serializedObject.FindProperty("_myBeautifulString");
+        PStats = serializedObject.FindProperty("_stats");
+    }
+
     public override void OnInspectorGUI()
     {
-        
-        EditorGUILayout.LabelField($"Oh shit, {serializedObject.FindProperty ("_myBeautifulString").stringValue}");
-
-        base.OnInspectorGUI();
-        EditorGUILayout.BeginHorizontal();
-
-        var property = serializedObject.FindProperty("test");
-        if(GUILayout.Button("--"))
+        using (new GUILayout.VerticalScope())
         {
-            property.intValue--;
+            EditorGUILayout.PropertyField(PMyBeautifulString, true);
+            EditorGUILayout.LabelField($"Oh shit, {PMyBeautifulString.stringValue}");
+            EditorGUILayout.PropertyField(PSceneInt, true);
+            DrawAddMinButtonForProperty(PSceneInt);
+            EditorGUILayout.PropertyField(PSceneString, true);
+            EditorGUILayout.PropertyField(PStats, true);
+            EditorGUILayout.LabelField($"Youpi");
         }
+        serializedObject.ApplyModifiedProperties();
+    }
 
-        if (GUILayout.Button("++"))
+    void DrawAddMinButtonForProperty(SerializedProperty property)
+    {
+        using (new GUILayout.HorizontalScope())
         {
-            property.intValue++;
+            if (GUILayout.Button("--"))
+            {
+                property.intValue--;
+            }
+            if (GUILayout.Button("++"))
+            {
+                property.intValue++;
+            }
         }
-
         var scenesLength = EditorBuildSettings.scenes.Length-1;
         property.intValue = Mathf.Clamp(property.intValue, 0, scenesLength);
-        
-        EditorGUILayout.EndHorizontal();
-        // var propertyStats = serializedObject.FindProperty("_stats");
-        // int healthValue = propertyStats.FindPropertyRelative("Health").intValue;
-        // int maxhealthValue = propertyStats.FindPropertyRelative("maxhealth").intValue;
-        // int manaValue = propertyStats.FindPropertyRelative("Mana").intValue;
-        // int maxmanaValue = propertyStats.FindPropertyRelative("maxmana").intValue;
-        // Rect rHealth = EditorGUILayout.BeginVertical();
-        // EditorGUI.ProgressBar(rHealth, (float)healthValue/(float)maxhealthValue , $"{healthValue}/{maxhealthValue}" );
-        // GUILayout.Space(16);
-        // EditorGUILayout.EndVertical();
-        // Rect rMana = EditorGUILayout.BeginVertical();
-        // EditorGUI.ProgressBar(rMana, (float)manaValue/(float)maxmanaValue , $"{manaValue}/{maxmanaValue}" );
-        // GUILayout.Space(16);
-        // EditorGUILayout.EndVertical();
-        serializedObject.ApplyModifiedProperties();
     }
 }

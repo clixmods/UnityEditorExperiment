@@ -4,48 +4,37 @@ using UnityEngine;
 
 [System.Serializable]
 public struct Stats
-{ 
-    [Range(0,100)] 
+{
     [SerializeField]
-    private int Health;
-    [SerializeField]
-    private int maxhealth;
-    [Range(0,100)] 
+    private int health;
+    [SerializeField]  
+    private int maxHealth;
+    
     [SerializeField] 
-    private int Mana;
-    [SerializeField]
-    private int maxmana;
+    private int mana;
+    
+    [SerializeField]  
+    private int maxMana;
     public Stats(int health, int mana)
     {
-        this.Health = health;
-        this.Mana = mana;
-        maxhealth = 100;
-        maxmana = 100;
+        this.health = health;
+        this.mana = mana;
+        maxHealth = 300;
+        maxMana = 100;
     }
 }
 
 public class StringComponent : MonoBehaviour
 {
     [SerializeField] private string _myBeautifulString = "HIPPIE KAI MOTHER FUCKA";
-
-    //[Range()]
-    [SerializeField][Scene] private int test = 0;
-
-    [SerializeField] [Scene] private string testStr= "bite";
-
-    [SerializeField] [Scene] private float testfloat = 1f;
-
-
-    [SerializeField] private Stats _stats;
+    [SerializeField][Scene] private int sceneInt = 0;
+    [SerializeField] [Scene] private string sceneString = "none";
+    [SerializeField] [Scene] private float sceneFloat = 0f;
+    
+    [SerializeField] private Stats _stats = new Stats(100,100);
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    
     }
 }

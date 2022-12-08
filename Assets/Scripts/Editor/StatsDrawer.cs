@@ -1,31 +1,31 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
-    [CustomPropertyDrawer(typeof(Stats))]
+[CustomPropertyDrawer(typeof(Stats))]
     public class StatsDrawer : PropertyDrawer
     {
+        //public SerializedProperty 
         public override void OnGUI(Rect position, SerializedProperty property,
             GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
+
+            var propertyHealth = property.FindPropertyRelative("health");
+            var propertyMana = property.FindPropertyRelative("mana");
             
-            var propertyStats = property;
             // Stock value
-            int healthValue = propertyStats.FindPropertyRelative("Health").intValue;
-            int maxhealthValue = propertyStats.FindPropertyRelative("maxhealth").intValue;
-            int manaValue = propertyStats.FindPropertyRelative("Mana").intValue;
-            int maxmanaValue = propertyStats.FindPropertyRelative("maxmana").intValue;
-            // Draw slider for health and mana
-            Rect IntSliderHealth = EditorGUILayout.BeginVertical();
-            propertyStats.FindPropertyRelative("Health").intValue = EditorGUI.IntSlider(IntSliderHealth, healthValue, 0, maxhealthValue);
-            GUILayout.Space(16);
-            EditorGUILayout.EndVertical();
-            Rect IntSliderMana = EditorGUILayout.BeginVertical();
-            propertyStats.FindPropertyRelative("Mana").intValue = EditorGUI.IntSlider(IntSliderMana, manaValue, 0, maxmanaValue);
-            GUILayout.Space(16);
-            EditorGUILayout.EndVertical();
+            int healthValue =  propertyHealth.intValue;
+            int maxhealthValue = property.FindPropertyRelative("maxHealth").intValue;
             
+            int manaValue =  propertyMana.intValue;
+            int maxmanaValue = property.FindPropertyRelative("maxMana").intValue;
+            
+            // Draw slider for health and mana
+            propertyHealth.intValue = EditorGUILayout.IntSlider("Health" , healthValue, 0, maxhealthValue);
+            propertyMana.intValue = EditorGUILayout.IntSlider( "Mana" , manaValue, 0, maxmanaValue);
+
             Rect rHealth = EditorGUILayout.BeginVertical();
             EditorGUI.ProgressBar(rHealth, (float)healthValue/(float)maxhealthValue , $"{healthValue}/{maxhealthValue}" );
             GUILayout.Space(16);
@@ -35,7 +35,7 @@ using UnityEngine;
             GUILayout.Space(16);
             EditorGUILayout.EndVertical();
             
-            EditorGUI.EndProperty();
+            EditorGUI.EndProperty(); 
             
         }
 

@@ -9,35 +9,35 @@ using System;
 
 public class SceneAttributeDrawer : PropertyDrawer
 {
-    private string[] nameScenes;
+    private string[] _nameScenes;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        nameScenes = new string[EditorBuildSettings.scenes.Length] ;
-        for(int i = 0; i < nameScenes.Length; i++)
+        _nameScenes = new string[EditorBuildSettings.scenes.Length] ;
+        for(int i = 0; i < _nameScenes.Length; i++)
         {
             SceneAsset asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(EditorBuildSettings.scenes[i].path);
-            nameScenes[i] = asset.name;
+            _nameScenes[i] = asset.name;
         }
         switch (property.propertyType)
         {
             case SerializedPropertyType.Integer:
-                property.intValue = EditorGUILayout.Popup(property.intValue, nameScenes);
+                property.intValue = EditorGUILayout.Popup(property.displayName ,property.intValue, _nameScenes);
                 break;
             case SerializedPropertyType.String:
-                int i = EditorGUILayout.Popup(GetIndexFromName(property.stringValue), nameScenes);
-                 property.stringValue = nameScenes[i];
+                int i = EditorGUILayout.Popup(property.displayName ,GetIndexFromName(property.stringValue), _nameScenes);
+                property.stringValue = _nameScenes[i];
                 break;
             default :
-                EditorGUILayout.LabelField("Use Scene with Int or String");
+                EditorGUILayout.HelpBox($"Type of {property.displayName} is incompatible for Scene attribute, use Int or String type",MessageType.Error);
                 break;
         }
     } 
     int GetIndexFromName(string strToSearch)
     {
-        int length = nameScenes.Length;
+        int length = _nameScenes.Length;
         for (int i = 0; i < length; i++)
         {
-            if (nameScenes[i] == strToSearch)
+            if (_nameScenes[i] == strToSearch)
                 return i;
         }
         return 0;
