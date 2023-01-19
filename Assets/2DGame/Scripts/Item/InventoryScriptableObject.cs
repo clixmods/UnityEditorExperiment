@@ -1,43 +1,96 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public struct SlotInventory
+{
+   public ItemScriptableObject item;
+   public int amount;
+}
+
 [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
 public class InventoryScriptableObject : ScriptableObject
 {
-   [SerializeField] private Dictionary<ItemScriptableObject, int> Items = new Dictionary<ItemScriptableObject, int>();
+   [SerializeField] private SlotInventory[] _slotsInventory;
+   [SerializeField] private int slotsAmount = 10;
+   public int SlotsAmount => slotsAmount;
 
+   private void OnEnable()
+   {
+      _slotsInventory = new SlotInventory[slotsAmount];
+   }
 #if UNITY_EDITOR
-   public ItemScriptableObject[] GetItems()
+   public SlotInventory[] GetItems()
    {
-      if (Items == null || Items.Keys.Count == 0) return new ItemScriptableObject[0];
-      var tempArray = new ItemScriptableObject[Items.Keys.Count];
-      int i = 0;
-      foreach (KeyValuePair<ItemScriptableObject, int> pair in Items)
-      {
-         tempArray[i] = pair.Key;
-         i++;
-      }
-      return tempArray;
+      return _slotsInventory;
    }
 
-   public int GetItemQuantity(ItemScriptableObject item)
+   public int GetItemStackQuantity(ItemScriptableObject item)
    {
-      return Items[item];
-   }
+      // if(item.IsStackable)
+      //    return Items[item];
 
-   public bool AddItem(ItemScriptableObject item)
+      return 1;
+   }
+   /// <summary>
+   /// Method to add item in inventory, if its possible, the method will return true, otherwise false
+   /// </summary>
+   /// <param name="itemToAdd"></param>
+   /// <returns></returns>
+   public bool AddItem(ItemScriptableObject itemToAdd)
    {
-      if (Items.ContainsKey(item))
+      if (itemToAdd.IsStackable)
       {
-         Items[item]++;
-         return true;
+         int index = GetSlotFromItem(itemToAdd);
+         if (index != -1)
+         {
+            _slotsInventory[index].amount++;
+            return true;
+         }
+         else
+         {
+            return AddItemToEmptySlot(itemToAdd);
+         }
       }
       else
       {
-         Items.Add(item,1);
+         return AddItemToEmptySlot(itemToAdd);
+      }
+      return false;
+   }
+
+   private bool AddItemToEmptySlot(ItemScriptableObject itemToAdd)
+   {
+      int index = GetEmptySlotIndex();
+      if (index != -1)
+      {
+         _slotsInventory[index].item = itemToAdd;
+         _slotsInventory[index].amount++;
          return true;
       }
+      return false;
+   }
+   int GetSlotFromItem(ItemScriptableObject item)
+   {
+      int length = _slotsInventory.Length;
+      for (int i = 0; i < length; i++)
+      {
+         if (_slotsInventory[i].item == item)
+            return i;
+      }
+      return -1;
+   }
+   int GetEmptySlotIndex()
+   {
+      int length = _slotsInventory.Length;
+      for (int i = 0; i < length; i++)
+      {
+         if (_slotsInventory[i].item == null)
+            return i;
+      }
+      return -1;
    }
 #endif
 }

@@ -24,26 +24,31 @@ public class UIInventory : MonoBehaviour
     private GameObject[] buttonsItem = Array.Empty<GameObject>();
     private void OnDrawGizmosSelected()
     {
-        radius = ((RectTransform)transform).rect.width * 0.5f;
-        resolution = _inventory.GetItems().Length;
-        foreach (var button in buttonsItem)
-        {
-            DestroyImmediate(button);
-        }
-        buttonsItem = new GameObject[resolution];
-        
-        Draw(Color.blue);
+        // radius = ((RectTransform)transform).rect.width * 0.5f;
+        // resolution = _inventory.GetItems().Length;
+        // foreach (var button in buttonsItem)
+        // {
+        //     DestroyImmediate(button);
+        // }
+        // buttonsItem = new GameObject[resolution];
+        //
+        // Draw(Color.blue);
     }
 
     private void Update()
     {
         radius = ((RectTransform)transform).rect.width * 0.5f;
-        resolution = _inventory.GetItems().Length;
-        foreach (var button in buttonsItem)
+        resolution = _inventory.SlotsAmount;
+        
+        if (buttonsItem.Length != resolution)
         {
-            DestroyImmediate(button);
+             foreach (var button in buttonsItem)
+             {
+                 Destroy(button);
+             }
+             buttonsItem = new GameObject[resolution];
         }
-        buttonsItem = new GameObject[resolution];
+            
         
         Draw(Color.blue);
     }
@@ -61,6 +66,7 @@ public class UIInventory : MonoBehaviour
         {
             pointsAmount++;
         }
+        // Determine where buttons can be placed in the circular inventory
         Vector3[] points = new Vector3[pointsAmount];
         int index = 0;
         for (float i = 0; i < 2 * PI; i += step)
@@ -71,19 +77,18 @@ public class UIInventory : MonoBehaviour
             index++;
         }
         // Draw each line of the shape
-        for (int i = 0; i < points.Length-1 ; i++)
+        for (int i = 0; i < resolution; i++)
         {
-            buttonsItem[i] = Instantiate(buttonItem,points[i],Quaternion.identity,transform);
-            var item = _inventory.GetItems()[i];
-            buttonsItem[i].GetComponent<UIInventoryItem>().GenerateButton(item, _inventory.GetItemQuantity(item));
+            if(buttonsItem[i] == null)
+                buttonsItem[i] = Instantiate(buttonItem,points[i],Quaternion.identity,transform);
+            // Attribute good position 
+            buttonsItem[i].transform.position = points[i];
+            // Get item and setup the UI Item Button in inventory
+            var slotInventory = _inventory.GetItems()[i];
+            if(slotInventory.item != null)
+                buttonsItem[i].GetComponent<UIInventoryItem>().GenerateButton(slotInventory.item, slotInventory.amount);
             
-            //Debug.DrawLine(points[i], points[i + 1], color);
         }
-        Debug.DrawLine(points[^1], points[0], color);
-        // Draw vertices
-        for (int i = 0; i < points.Length; i++)
-        {
-            Debug.DrawLine(points[i], points[(i + density) % points.Length], color);
-        }
+        
     }
 }

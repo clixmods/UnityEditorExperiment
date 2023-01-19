@@ -14,14 +14,14 @@ public class InventoryScriptableObjectEditor : Editor
     private void OnEnable()
     {
         myTarget = (InventoryScriptableObject)target;
-        listOfItems = myTarget.GetItems();
-        {
-            lists = new ReorderableList(listOfItems, typeof(ItemScriptableObject),false,true,true,false);
-            lists.drawElementCallback = DrawElementItem; // Delegate to draw the elements on the list
-            lists.drawHeaderCallback = DrawHeader; // Skip this line if you set displayHeader to 'false' in your ReorderableList constructor.
-            lists.onAddCallback = OnAddCallback;
-            //lists.onChangedCallback = reorderableList =>
-        }
+        // listOfItems = myTarget.GetItems();
+        // {
+        //     lists = new ReorderableList(listOfItems, typeof(ItemScriptableObject),false,true,true,false);
+        //     lists.drawElementCallback = DrawElementItem; // Delegate to draw the elements on the list
+        //     lists.drawHeaderCallback = DrawHeader; // Skip this line if you set displayHeader to 'false' in your ReorderableList constructor.
+        //     lists.onAddCallback = OnAddCallback;
+        //     //lists.onChangedCallback = reorderableList =>
+        // }
     }
 
     private void OnAddCallback(ReorderableList list)
@@ -44,7 +44,7 @@ public class InventoryScriptableObjectEditor : Editor
         // GameObject name field
         Rect textFieldRect = new Rect(rect.x+32 , rect.y, 150, EditorGUIUtility.singleLineHeight);
         var item = listOfItems[index];
-        EditorGUI.ObjectField(textFieldRect,item.name + $"[{myTarget.GetItemQuantity(item)}]", item, typeof(ItemScriptableObject), false);
+        EditorGUI.ObjectField(textFieldRect,item.name + $"[{myTarget.GetItemStackQuantity(item)}]", item, typeof(ItemScriptableObject), false);
     }
 
     private void DrawHeader(Rect rect)

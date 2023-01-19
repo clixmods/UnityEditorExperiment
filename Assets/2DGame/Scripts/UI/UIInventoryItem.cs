@@ -12,7 +12,14 @@ public class UIInventoryItem : MonoBehaviour
 
     public void GenerateButton(ItemScriptableObject item, int itemAmount)
     {
-        textAmount.text = itemAmount.ToString();
+        if(itemAmount > 1)
+        {
+            textAmount.text = itemAmount.ToString();
+        }
+        else
+        {
+            textAmount.text = string.Empty;
+        }
         textName.text = item.name;
         icon.sprite = item.icon;
     }
