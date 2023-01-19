@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInstance : MonoBehaviour
+public class PlayerObjec : MonoBehaviour
 {
     private Vector2 _moveValue;
 
