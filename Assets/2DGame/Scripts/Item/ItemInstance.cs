@@ -34,18 +34,17 @@ public class ItemInstance : MonoBehaviour, IGrabbable
     {
         GetDefaultValues();
     }
-    
     public void OnGrab(InventoryScriptableObject targetInventory)
     {
-        targetInventory.AddItem(itemGrabbable);
+        bool itemIsAdded = targetInventory.AddItem(itemGrabbable);
+        if(itemIsAdded)
+            Destroy(gameObject);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("triggered");
         if (other.TryGetComponent<ICharacter>(out var character))
         {
             OnGrab(character.Inventory);
-            Destroy(gameObject);
         }
     }
 }

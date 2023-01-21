@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            UIMenu.CloseMenu();
+            //UIMenu.CloseMenu();
         }
 
         if (UIMenu.ActiveMenu == null)

@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Player Settings", menuName = "Settings/Player Settings ", order = 0)]
-public class PlayerScriptableObject : ScriptableObject
+public class CharacterScriptableObject : ScriptableObject
 {
     [SerializeField] private float _speed = 4;
     public float Speed => _speed;

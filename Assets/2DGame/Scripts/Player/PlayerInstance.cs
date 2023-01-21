@@ -8,10 +8,10 @@ using UnityEngine;
 public class PlayerInstance : MonoBehaviour, ICharacter
 {
     private const string AssetNamePlayerSettingDefault = "PlayerSettingsDefault";
-    [SerializeField] private PlayerScriptableObject playerSettings;
+    [SerializeField] private CharacterScriptableObject characterSettings;
     [SerializeField] private InventoryScriptableObject inventory;
     #region Properties
-    public PlayerScriptableObject PlayerSettings => playerSettings;
+    public CharacterScriptableObject CharacterSetting => characterSettings;
     public float Health { get; }
     public void DoDamage(int amount)
     {
@@ -25,9 +25,9 @@ public class PlayerInstance : MonoBehaviour, ICharacter
     /// </summary>
     private void GetDefaultValues()
     {
-        if (playerSettings == null)
+        if (characterSettings == null)
         {
-            playerSettings = Resources.Load<PlayerScriptableObject>(AssetNamePlayerSettingDefault);
+            characterSettings = Resources.Load<CharacterScriptableObject>(AssetNamePlayerSettingDefault);
         }
     }
     private void Start()

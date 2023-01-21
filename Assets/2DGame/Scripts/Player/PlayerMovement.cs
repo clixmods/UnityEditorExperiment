@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
 
     #region Properties
-    private float speed => _playerInstance.PlayerSettings.Speed;
+    private float speed => _playerInstance.CharacterSetting.Speed;
     #endregion
     
     private void Start()
