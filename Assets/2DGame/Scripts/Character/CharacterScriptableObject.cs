@@ -12,6 +12,14 @@ public class CharacterScriptableObject : ScriptableObject
     /// Speed of the character applied while it moves in 2D world
     /// </summary>
     public float Speed => _speed;
+    
+    [Tooltip("The force applied for the character to jump")]
+    [SerializeField] private float _jumpForce = 10;
+    /// <summary>
+    /// The force applied for the character to jump
+    /// </summary>
+    public float JumpForce => _jumpForce;
+    
     [Tooltip("The appearance of the character in the 2D world ")]
     [SerializeField] private Sprite characterSprite;
     /// <summary>
