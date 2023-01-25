@@ -13,26 +13,20 @@ public struct SlotInventory
 [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
 public class InventoryScriptableObject : ScriptableObject
 {
+   #region Events
+   public delegate void InventoryEvent();
+   public event InventoryEvent EventObjectAdd;
+   #endregion
    [SerializeField] private SlotInventory[] slotsInventory;
    [SerializeField] private int slotsAmount = 10;
    public int SlotsAmount => slotsAmount;
-
    private void OnEnable()
    {
       slotsInventory = new SlotInventory[slotsAmount];
    }
-#if UNITY_EDITOR
-   public SlotInventory[] GetItems()
+   public SlotInventory[] GetSlotsInventory()
    {
       return slotsInventory;
-   }
-
-   public int GetItemStackQuantity(ItemScriptableObject item)
-   {
-      // if(item.IsStackable)
-      //    return Items[item];
-
-      return 1;
    }
    /// <summary>
    /// Method to add item in inventory, if its possible, the method will return true, otherwise false
@@ -47,6 +41,7 @@ public class InventoryScriptableObject : ScriptableObject
          if (index != -1)
          {
             slotsInventory[index].amount++;
+            EventObjectAdd?.Invoke();
             return true;
          }
          else
@@ -68,11 +63,12 @@ public class InventoryScriptableObject : ScriptableObject
       {
          slotsInventory[index].item = itemToAdd;
          slotsInventory[index].amount++;
+         EventObjectAdd?.Invoke();
          return true;
       }
       return false;
    }
-   int GetSlotFromItem(ItemScriptableObject item)
+   private int GetSlotFromItem(ItemScriptableObject item)
    {
       int length = slotsInventory.Length;
       for (int i = 0; i < length; i++)
@@ -82,7 +78,7 @@ public class InventoryScriptableObject : ScriptableObject
       }
       return -1;
    }
-   int GetEmptySlotIndex()
+   private int GetEmptySlotIndex()
    {
       int length = slotsInventory.Length;
       for (int i = 0; i < length; i++)
@@ -92,5 +88,5 @@ public class InventoryScriptableObject : ScriptableObject
       }
       return -1;
    }
-#endif
+
 }

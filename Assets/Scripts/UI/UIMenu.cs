@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
 
 public class UIMenu : MonoBehaviour
 {
@@ -42,7 +43,15 @@ public class UIMenu : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(_firstSelectedGameObject);
         else
         {
-            Debug.LogError("UIMenu : variable _firstSelectedGameObject is not assigned, please assign it");
+            var buttonInChild = GetComponentInChildren<Button>();
+            if (buttonInChild != null)
+            {
+                EventSystem.current.SetSelectedGameObject(buttonInChild.gameObject);
+            }
+            else
+            {
+                Debug.LogError("UIMenu : _firstSelectedGameObject was not assigned, and no button are available in transform child, so please assign it", gameObject);
+            }
         }
     }
 

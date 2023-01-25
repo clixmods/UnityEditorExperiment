@@ -8,16 +8,12 @@ using UnityEngine;
 public class PlayerInstance : MonoBehaviour, ICharacter
 {
     private const string AssetNamePlayerSettingDefault = "PlayerSettingsDefault";
+    private float _health = 1;
     [SerializeField] private CharacterScriptableObject characterSettings;
     [SerializeField] private InventoryScriptableObject inventory;
     #region Properties
     public CharacterScriptableObject CharacterSetting => characterSettings;
-    public float Health { get; }
-    public void DoDamage(int amount)
-    {
-        throw new NotImplementedException();
-    }
-
+    public float Health => _health;
     public InventoryScriptableObject Inventory => inventory;
     #endregion
     /// <summary>
@@ -34,10 +30,15 @@ public class PlayerInstance : MonoBehaviour, ICharacter
     {
         GetDefaultValues();
     }
-#if UNITY_EDITOR
-    private void OnValidate()
+
+    public void DoDamage(int amount)
     {
-        GetDefaultValues();
-    }    
-#endif
+        throw new NotImplementedException();
+    }
+    #if UNITY_EDITOR
+        private void OnValidate()
+        {
+            GetDefaultValues();
+        }    
+    #endif
 }

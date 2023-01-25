@@ -10,8 +10,11 @@ public class AIInstance : MonoBehaviour, ICharacter
     {
         throw new System.NotImplementedException();
     }
-    public CharacterScriptableObject CharacterSetting { get; }
+
+    public CharacterScriptableObject CharacterSetting => characterScriptableObject;
     public InventoryScriptableObject Inventory { get; }
+
+    [SerializeField] private CharacterScriptableObject characterScriptableObject;
     private CharacterMovement2D _characterMovement2D;
 
     private void Start()

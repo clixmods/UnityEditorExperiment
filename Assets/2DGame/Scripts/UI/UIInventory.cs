@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UIInventory : MonoBehaviour
+public class UIInventory : MonoBehaviour 
 {
-    
-    ///
     /// <summary>
     /// Constant of PI, cached here to not use Mathf class
     /// </summary>
@@ -14,42 +14,49 @@ public class UIInventory : MonoBehaviour
     /// <summary>
     /// Size of the shape, also the distance between the origin and the edge of the shape.
     /// </summary>
-    [Header("Shape")] 
-    [Range(1, 360),SerializeField] private float radius = 2;
-    [Range(2, 30), SerializeField] private int resolution = 5;
-    [Range(2, 30), SerializeField] private int density = 2;
-
+    private float _radius = 2;
+    private int _resolution = 5;
     [SerializeField] private InventoryScriptableObject _inventory;
     [SerializeField] private GameObject buttonItem;
     private GameObject[] buttonsItem = Array.Empty<GameObject>();
+    private void Awake()
+    {
+        _inventory.EventObjectAdd += RefreshUI;
+        RefreshUI(true);
+    }
     private void OnDrawGizmosSelected()
     {
-        // radius = ((RectTransform)transform).rect.width * 0.5f;
-        // resolution = _inventory.GetItems().Length;
-        // foreach (var button in buttonsItem)
-        // {
-        //     DestroyImmediate(button);
-        // }
-        // buttonsItem = new GameObject[resolution];
-        //
-        // Draw(Color.blue);
+        if(!Application.isPlaying)
+            RefreshUI();
     }
 
-    private void Update()
+    private void RefreshUI()
     {
-        radius = ((RectTransform)transform).rect.width * 0.5f;
-        resolution = _inventory.SlotsAmount;
-        
-        if (buttonsItem.Length != resolution)
+        RefreshUI(false);
+    }
+    private void RefreshUI(bool destroyPreviousButton)
+    {
+        _radius = ((RectTransform)transform).rect.max.magnitude;
+        _resolution = _inventory.SlotsAmount;
+        foreach (Transform child in transform)
         {
-             foreach (var button in buttonsItem)
-             {
-                 Destroy(button);
-             }
-             buttonsItem = new GameObject[resolution];
+            if (!buttonsItem.Contains(child.gameObject))
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(child.gameObject);
+                }
+                else
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+            }
         }
-            
-        
+
+        if (destroyPreviousButton || buttonsItem.Length != _resolution)
+        {
+            buttonsItem = new GameObject[_resolution];
+        }
         Draw(Color.blue);
     }
 
@@ -59,8 +66,8 @@ public class UIInventory : MonoBehaviour
     /// <param name="color">Select a color to draw</param>
     private void Draw(Color color)
     {
-        Vector3 center = transform.position;
-        float step = 2 * PI / resolution;
+        Vector3 center = Vector3.zero;
+        float step = 2 * PI / _resolution;
         int pointsAmount = 0;
         for (float i = 0; i < 2 * PI; i += step)
         {
@@ -71,23 +78,22 @@ public class UIInventory : MonoBehaviour
         int index = 0;
         for (float i = 0; i < 2 * PI; i += step)
         {
-            float x = center.x + (radius * Mathf.Cos(i));
-            float y = center.y - (radius * Mathf.Sin(i));
+            float x = center.x + (_radius * Mathf.Cos(i));
+            float y = center.y - (_radius * Mathf.Sin(i));
             points[index] = new Vector3(x, y, 0);
             index++;
         }
         // Draw each line of the shape
-        for (int i = 0; i < resolution; i++)
+        for (int i = 0; i < _resolution; i++)
         {
             if(buttonsItem[i] == null)
                 buttonsItem[i] = Instantiate(buttonItem,points[i],Quaternion.identity,transform);
             // Attribute good position 
-            buttonsItem[i].transform.position = points[i];
+            buttonsItem[i].transform.localPosition = points[i];
             // Get item and setup the UI Item Button in inventory
-            var slotInventory = _inventory.GetItems()[i];
-            if(slotInventory.item != null)
-                buttonsItem[i].GetComponent<UIInventoryItem>().GenerateButton(slotInventory.item, slotInventory.amount);
-            
+            var slotInventory = _inventory.GetSlotsInventory()[i];
+            var uiInventoryItem = buttonsItem[i].GetComponent<UIInventoryItem>();
+            uiInventoryItem.GenerateButton(this,slotInventory);
         }
         
     }

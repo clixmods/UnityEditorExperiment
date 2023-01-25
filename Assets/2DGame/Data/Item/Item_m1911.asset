@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e51f843cd5e86da49bf3a87e9238f364, type: 3}
+  m_Script: {fileID: 11500000, guid: 634034a079844cc8bb7c81c9254b84ca, type: 3}
   m_Name: Item_m1911
   m_EditorClassIdentifier: 
+  _itemType: 1
   _name: M1911
+  _description: 
   _icon: {fileID: 21300000, guid: f9a3318518a4b9645ac0c7bb3efbb05b, type: 3}
   _isStackable: 0
   _stackMaxQuantity: 0
+  spriteWorld: {fileID: 0}
+  spriteWorld: {fileID: 0}
