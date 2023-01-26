@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e51f843cd5e86da49bf3a87e9238f364, type: 3}
-  m_Name: Item_m1911
+  m_Name: Item_shotgun
   m_EditorClassIdentifier: 
   _itemType: 1
-  _name: M1911
+  _name: Shotgun
   _description: 
-  _icon: {fileID: 21300000, guid: 48114d51af407db4f934e4cd1ae68dc8, type: 3}
+  _icon: {fileID: 21300000, guid: 5d64af7b79e3ffa488c10ce0079f24fb, type: 3}
   _isStackable: 0
   _stackMaxQuantity: 0
   spriteWorld: {fileID: 0}
-  ammoItem: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
+  ammoItem: {fileID: 11400000, guid: 41ebaa1e29c0c3c43861acb0c8fdc67f, type: 2}

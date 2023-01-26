@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51f843cd5e86da49bf3a87e9238f364, type: 3}
   m_Name: Item_smg
   m_EditorClassIdentifier: 
+  _itemType: 1
   _name: SMG
-  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _description: 
+  _icon: {fileID: 21300000, guid: 45fb5205ce4617748ab891d523b88f3b, type: 3}
+  _isStackable: 0
+  _stackMaxQuantity: 0
+  spriteWorld: {fileID: 0}
+  ammoItem: {fileID: 11400000, guid: 33e1b853a899c614e8831326ec9fd621, type: 2}
