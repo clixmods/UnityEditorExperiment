@@ -13,24 +13,34 @@ MonoBehaviour:
   m_Name: InventoryPlayer
   m_EditorClassIdentifier: 
   slotsInventory:
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  - item: {fileID: 0}
-    amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
+  - _inventoryScriptableObject: {fileID: 11400000}
+    _item: {fileID: 0}
+    _amount: 0
   slotsAmount: 10

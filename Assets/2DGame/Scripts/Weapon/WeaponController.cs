@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -14,6 +15,7 @@ public class WeaponController : MonoBehaviour
     public event WeaponEvent EventWeaponFire;
     #endregion
     [SerializeField] private GameObject _gunParent;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     public int currentAmmo;
     public void AimWeaponMouse(InputAction.CallbackContext context)
     {
@@ -29,7 +31,15 @@ public class WeaponController : MonoBehaviour
     {
         _gunParent.transform.right = directionAim;
     }
-
+    /// <summary>
+    /// Set the apparence of the weapon
+    /// </summary>
+    /// <param name="sprite"></param>
+    public void SetView(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+    }
+    
     public void ShootInput(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -38,4 +48,5 @@ public class WeaponController : MonoBehaviour
             Debug.Log("Shoot");
         }
     }
+    
 }

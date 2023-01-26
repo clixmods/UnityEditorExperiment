@@ -166,6 +166,7 @@ namespace _2DGame.Scripts.Item
          for (int i = 0; i < slotsInventory.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
+            slotsInventory[i].inventoryScriptableObject = this;
          }
       }
    }

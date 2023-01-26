@@ -37,10 +37,15 @@ namespace _2DGame.Scripts.Player
             _slotInventorySelected = slotInventory;
             if (_slotInventorySelected.item.Type == ItemType.Weapon)
             {
+                _weaponController.SetView(_slotInventorySelected.item.SpriteWorld);
                 if (inventory.TryGetSlotFromItem(_slotInventorySelected.item.AmmoItem, out var ammoSlotInventory))
                 {
                     _ammoSlotInventoryWeapon = ammoSlotInventory;
                 }
+            }
+            else
+            {
+                _weaponController.SetView(null);
             }
         }
         private void WeaponControllerOnEventWeaponFire()

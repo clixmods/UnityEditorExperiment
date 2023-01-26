@@ -5115,6 +5115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gunParent: {fileID: 385496929}
+  spriteRenderer: {fileID: 132057699}
   currentAmmo: 0
 --- !u!1 &1346744579
 GameObject:
