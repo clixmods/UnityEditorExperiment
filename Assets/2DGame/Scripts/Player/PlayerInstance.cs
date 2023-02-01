@@ -15,6 +15,10 @@ namespace _2DGame.Scripts.Player
         [SerializeField] private InventoryScriptableObject inventory;
         private SlotInventory _slotInventorySelected;
         private SlotInventory _ammoSlotInventoryWeapon;
+        [SerializeField] private Rigidbody2D ammoRb;
+        [SerializeField] private Transform spawnPoint;
+        [SerializeField] private float ammoSpeed;
+        [SerializeField] private GameObject weapon;
 
 
         #region Properties
@@ -54,6 +58,8 @@ namespace _2DGame.Scripts.Player
             {
                 Debug.Log("Weapon fire");
                 _ammoSlotInventoryWeapon.amount--;
+                Rigidbody2D ammo = Instantiate(ammoRb, spawnPoint.position, Quaternion.identity);
+                ammo.velocity = transform.TransformDirection(weapon.transform.localPosition * Vector2.right);
             }
         }
         public void DoDamage(int amount)

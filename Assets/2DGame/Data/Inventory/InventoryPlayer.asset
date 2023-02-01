@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotsInventory:
   - _inventoryScriptableObject: {fileID: 11400000}
-    _item: {fileID: 0}
-    _amount: 0
+    _item: {fileID: 11400000, guid: e80af002f0e515d419f8b4f38e4939b5, type: 2}
+    _amount: 1
   - _inventoryScriptableObject: {fileID: 11400000}
     _item: {fileID: 0}
     _amount: 0

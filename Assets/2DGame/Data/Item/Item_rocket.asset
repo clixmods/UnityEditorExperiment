@@ -18,5 +18,5 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 2698d2822d637f74ca1a23958361c388, type: 3}
   _isStackable: 0
   _stackMaxQuantity: 0
-  spriteWorld: {fileID: 0}
+  spriteWorld: {fileID: 21300000, guid: 2698d2822d637f74ca1a23958361c388, type: 3}
   ammoItem: {fileID: 11400000, guid: 92f534632522da74aa932f490b886606, type: 2}

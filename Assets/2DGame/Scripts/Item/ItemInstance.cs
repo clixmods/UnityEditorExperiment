@@ -2,40 +2,48 @@ using UnityEngine;
 
 namespace _2DGame.Scripts.Item
 {
+    [AddComponentMenu("2DGame/Item/Item Instance")]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(SpriteRenderer))]
     public class ItemInstance : MonoBehaviour, IGrabbable
     {
-        private SpriteRenderer _spriteRenderer;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ItemScriptableObject itemGrabbable;
-        private BoxCollider2D _boxCollider2D;
+        [SerializeField] private BoxCollider2D _boxCollider2D;
         private bool _isGrabbed;
+        private Vector2 _spriteRendererSize = new Vector2(2, 1);
         /// <summary>
         /// Method used to get default values for somes parameters to guarantee a correct execution
         /// </summary>
         private void GetDefaultValues()
         {
-            if (_boxCollider2D == null || !_boxCollider2D.isTrigger )
+            _boxCollider2D ??= GetComponent<BoxCollider2D>();
+            _spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
+            if (_spriteRenderer != null && itemGrabbable != null)
             {
-                _boxCollider2D = GetComponent<BoxCollider2D>();
+                _spriteRenderer.sprite = itemGrabbable.Icon;
+                // Give good proportion for the sprite Icon
+                _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+                _spriteRendererSize = itemGrabbable.Icon.rect.size.normalized;
+                _spriteRenderer.size = _spriteRendererSize;
                 _boxCollider2D.isTrigger = true;
             }
-            if (_spriteRenderer == null && itemGrabbable != null)
-            {
-                _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-                _spriteRenderer.sprite = itemGrabbable.Icon;
-            }
+                
+            
         }
 #if UNITY_EDITOR
         private void OnValidate()
         {
             GetDefaultValues();
+            gameObject.name = $"Bonus : {itemGrabbable.name}";
         }
 #endif
     
         private void Awake()
         {
             GetDefaultValues();
+           
         }
   
         private void OnTriggerEnter2D(Collider2D other)

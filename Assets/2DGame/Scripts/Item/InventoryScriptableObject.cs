@@ -110,7 +110,7 @@ namespace _2DGame.Scripts.Item
          int index = GetEmptySlotIndex();
          if (index != -1)
          {
-            slotsInventory[index].inventoryScriptableObject = this;
+           // slotsInventory[index].inventoryScriptableObject = this;
             slotsInventory[index].item = itemToAdd;
             slotsInventory[index].amount++;
             EventObjectAdd?.Invoke();
