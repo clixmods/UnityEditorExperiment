@@ -10,7 +10,6 @@ namespace _2DGame.Scripts
     {
         public float Health { get; }
         public void DoDamage(int amount);
-    
         /// <summary>
         /// Setting for the character, you can set the speed, skin etc
         /// </summary>

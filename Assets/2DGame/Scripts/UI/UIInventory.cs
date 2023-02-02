@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using _2DGame.Scripts.Item;
 using UnityEngine;
-
 namespace _2DGame.Scripts.UI
 {
     public class UIInventory : MonoBehaviour 
@@ -20,18 +19,15 @@ namespace _2DGame.Scripts.UI
         [SerializeField] private GameObject buttonItem;
         private GameObject[] buttonsItem = Array.Empty<GameObject>();
         private SlotInventory _selectedSlot;
-
         public void SetSelectedSlot(SlotInventory slotInventory)
         {
             _inventory.SetSelectedSlot(slotInventory);
         }
-       
         private void OnDrawGizmosSelected()
         {
             if(!Application.isPlaying)
                 RefreshUI();
         }
-
         private void RefreshUI()
         {
             RefreshUI(false);
@@ -54,14 +50,12 @@ namespace _2DGame.Scripts.UI
                     }
                 }
             }
-
             if (destroyPreviousButton || buttonsItem.Length != _resolution)
             {
                 buttonsItem = new GameObject[_resolution];
             }
             Draw(Color.blue);
         }
-
         /// <summary>
         /// Draw the shape 
         /// </summary>
@@ -97,15 +91,12 @@ namespace _2DGame.Scripts.UI
                 var uiInventoryItem = buttonsItem[i].GetComponent<UIInventoryItem>();
                 uiInventoryItem.GenerateButton(this,slotInventory);
             }
-        
         }
-        
         private void Awake()
         {
             _inventory.EventObjectAdd += RefreshUI;
             RefreshUI(true);
         }
-
         private void OnDisable()
         {
             for (int i = 0; i < buttonsItem.Length; i++)
@@ -116,9 +107,6 @@ namespace _2DGame.Scripts.UI
                     _inventory.SetSelectedSlot(uiInventoryItem.SlotInventory);
                 }
             }
-
-           
-            
         }
     }
 }

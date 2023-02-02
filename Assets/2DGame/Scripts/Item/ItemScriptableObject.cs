@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 namespace _2DGame.Scripts.Item
 {
     public enum ItemType
@@ -11,7 +8,6 @@ namespace _2DGame.Scripts.Item
         Ammo,
         Key
     }
-
     [CreateAssetMenu(fileName = "Item_", menuName = "Item/Item", order = 1)]
     public class ItemScriptableObject : ScriptableObject
     {
@@ -38,6 +34,5 @@ namespace _2DGame.Scripts.Item
         [SerializeField] private ItemScriptableObject ammoItem;
         public Sprite SpriteWorld => spriteWorld;
         public ItemScriptableObject AmmoItem => ammoItem;
-
     }
 }

@@ -19,8 +19,6 @@ namespace _2DGame.Scripts.Player
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private float ammoSpeed;
         [SerializeField] private GameObject weapon;
-
-
         #region Properties
         public CharacterScriptableObject CharacterSetting => characterSettings;
         public float Health => _health;
@@ -38,6 +36,10 @@ namespace _2DGame.Scripts.Player
         }
         private void InventoryOnEventObjectSelect(SlotInventory slotInventory)
         {
+            if (slotInventory.item == null)
+            {
+                return;
+            }
             _slotInventorySelected = slotInventory;
             if (_slotInventorySelected.item.Type == ItemType.Weapon)
             {
@@ -46,15 +48,20 @@ namespace _2DGame.Scripts.Player
                 {
                     _ammoSlotInventoryWeapon = ammoSlotInventory;
                 }
+                else
+                {
+                    _ammoSlotInventoryWeapon = null;
+                }
             }
             else
             {
                 _weaponController.SetView(null);
             }
         }
+        // TODO : Move weapon behaviour in weapon controller
         private void WeaponControllerOnEventWeaponFire()
         {
-            if ( _ammoSlotInventoryWeapon.amount > 0)
+            if ( _ammoSlotInventoryWeapon != null && _ammoSlotInventoryWeapon.amount > 0)
             {
                 Debug.Log("Weapon fire");
                 _ammoSlotInventoryWeapon.amount--;
@@ -66,7 +73,6 @@ namespace _2DGame.Scripts.Player
         {
             throw new NotImplementedException();
         }
-        
         private void Start()
         {
             _weaponController = GetComponent<WeaponController>();

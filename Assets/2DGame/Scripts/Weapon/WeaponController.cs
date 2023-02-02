@@ -1,14 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using _2DGame.Scripts.Item;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
-
 public class WeaponController : MonoBehaviour
 {
     #region Events
@@ -16,8 +9,7 @@ public class WeaponController : MonoBehaviour
     public event WeaponEvent EventWeaponFire;
     #endregion
     [SerializeField] private GameObject _gunParent;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    
+    [SerializeField] private SpriteRenderer spriteRenderer;   
     public int currentAmmo;
     public void AimWeaponMouse(InputAction.CallbackContext context)
     {
@@ -28,7 +20,6 @@ public class WeaponController : MonoBehaviour
     {
         SetAimDirection((Vector3)context.ReadValue<Vector2>());
     }
-
     public void SetAimDirection(Vector2 directionAim)
     {
         _gunParent.transform.right = directionAim;
@@ -48,17 +39,18 @@ public class WeaponController : MonoBehaviour
     public void SetView(Sprite sprite)
     {
         spriteRenderer.sprite = sprite;
-        spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-        spriteRenderer.size = sprite.rect.size.normalized*2f;
+        if (sprite != null)
+        {
+            spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+            spriteRenderer.size = sprite.rect.size.normalized*2f;
+        }
     }
-    
     public void ShootInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             EventWeaponFire?.Invoke();
-            Debug.Log("Shoot");
+            Debug.Log("try to Shoot");
         }
     }
-    
 }

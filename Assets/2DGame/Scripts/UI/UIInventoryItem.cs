@@ -5,18 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
-
 namespace _2DGame.Scripts.UI
 {
     [RequireComponent(typeof(RectTransform))]
     public class UIInventoryItem : MonoBehaviour ,  IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler , IPointerExitHandler
     {
         private const float SpeedAnim = 5f;
-        
         [SerializeField] private TextMeshProUGUI textAmount;
         [SerializeField] private TextMeshProUGUI textName;
         [SerializeField] private Image icon;
-        
         private RectTransform _rectTransform;
         private Vector3 _initialScale;
         private Vector3 _initialLocalPosition;
@@ -24,16 +21,18 @@ namespace _2DGame.Scripts.UI
         private bool _isSelected;
         private UIInventory _uiInventory;
         private SlotInventory _slotInventory;
-
         public bool IsSelected => _isSelected;
         public SlotInventory SlotInventory => _slotInventory;
-        
         public void GenerateButton(UIInventory uiInventory , SlotInventory slotInventory)
         {
+            if (_slotInventory != null)
+            {
+                _slotInventory.EventItemUpdate -= RefreshValuesOfItem;
+            }
             _slotInventory = slotInventory;
+            _slotInventory.EventItemUpdate += RefreshValuesOfItem;
             _uiInventory = uiInventory;
             RefreshValuesOfItem();
-
         }
         private void LerpScaleToTarget(Vector2 targetScale)
         {
@@ -41,7 +40,6 @@ namespace _2DGame.Scripts.UI
             var lerp = Vector2.Lerp(currentSizeRect, targetScale , Time.unscaledDeltaTime * SpeedAnim);
             _rectTransform.localScale = lerp;
         }
-
         private void RefreshValuesOfItem()
         {
             if (_slotInventory.item == null)
@@ -66,19 +64,15 @@ namespace _2DGame.Scripts.UI
                 icon.color = Color.white;
             }
         }
-
         #region OnPointer
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             _isSelected = true;
         }
-
         public void OnPointerExit(PointerEventData eventData)
         {
             _isSelected = false;
         }
-
         #endregion
         #region DragHandler
         public void OnBeginDrag(PointerEventData eventData)
@@ -123,12 +117,15 @@ namespace _2DGame.Scripts.UI
             _initialLocalPosition = _rectTransform.localPosition;
             _slotInventory.EventItemUpdate += RefreshValuesOfItem;
         }
+        private void OnEnable()
+        {
+            _isSelected = false;
+        }
         private void OnDisable()
         {
             _rectTransform.localScale = _initialScale;
             _isOver = false;
             _rectTransform.localPosition = _initialLocalPosition;
-            //_isSelected = false;
         }
         private void Update()
         {
@@ -142,8 +139,5 @@ namespace _2DGame.Scripts.UI
             }
         }
         #endregion
-
-
-      
     }
 }

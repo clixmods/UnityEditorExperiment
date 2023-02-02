@@ -1,66 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 namespace _2DGame.Scripts.Item
 {
-   [Serializable]
-   public class SlotInventory
-   {
-      #region Events
-
-      public delegate void ItemUpdate();
-      public event ItemUpdate EventItemUpdate;
-
-      #endregion
-      [SerializeField] private InventoryScriptableObject _inventoryScriptableObject;
-      [SerializeField] private ItemScriptableObject _item;
-      [SerializeField] private int _amount;
-
-      #region Properties
-
-      public InventoryScriptableObject inventoryScriptableObject
-      {
-         get => _inventoryScriptableObject;
-         set
-         {
-            EventItemUpdate?.Invoke();
-            _inventoryScriptableObject = value;
-         }
-      }
-      public ItemScriptableObject item 
-      {
-         get => _item;
-         set
-         {
-            EventItemUpdate?.Invoke();
-            _item = value;
-         }
-      }
-      public int amount 
-      {
-         get => _amount;
-         set
-         {
-            EventItemUpdate?.Invoke();
-            _amount = value;
-            if (_amount == 0 && item != null && item.IsStackable)
-            {
-               ClearSlot();
-            }
-         }
-      }
-
-      #endregion
-
-      private void ClearSlot()
-      {
-         item = null;
-         amount = 0;
-      }
-   }
-
    [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
    public class InventoryScriptableObject : ScriptableObject
    {
@@ -73,7 +13,6 @@ namespace _2DGame.Scripts.Item
       [SerializeField] private SlotInventory[] slotsInventory;
       [SerializeField] private int slotsAmount = 10;
       public int SlotsAmount => slotsAmount;
-     
       public SlotInventory[] GetSlotsInventory()
       {
          return slotsInventory;
@@ -138,7 +77,6 @@ namespace _2DGame.Scripts.Item
          }
          return -1;
       }
-
       public bool TryGetSlotFromItem(ItemScriptableObject item, out SlotInventory slotInventory)
       {
          slotInventory = new SlotInventory();
@@ -155,7 +93,6 @@ namespace _2DGame.Scripts.Item
       {
          return GetSlotIndexFromItem(itemToCheck) != -1;
       }
-
       public void SetSelectedSlot(SlotInventory slotInventory)
       {
          EventObjectSelect?.Invoke(slotInventory);
@@ -166,7 +103,7 @@ namespace _2DGame.Scripts.Item
          for (int i = 0; i < slotsInventory.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
-            slotsInventory[i].inventoryScriptableObject = this;
+            //slotsInventory[i].inventoryScriptableObject = this;
          }
       }
    }

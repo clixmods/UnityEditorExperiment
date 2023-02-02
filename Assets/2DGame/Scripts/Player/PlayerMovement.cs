@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 namespace _2DGame.Scripts.Player
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInstance))]
@@ -8,11 +7,9 @@ namespace _2DGame.Scripts.Player
     {
         private PlayerInstance _playerInstance;
         private Rigidbody2D _rigidbody2D;
-
         #region Properties
         private float speed => _playerInstance.CharacterSetting.Speed;
         #endregion
-    
         private void Start()
         {
             _playerInstance = GetComponent<PlayerInstance>();

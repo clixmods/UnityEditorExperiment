@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace _2DGame.Scripts.Item
 {
     [AddComponentMenu("2DGame/Item/Item Instance")]
@@ -29,8 +28,6 @@ namespace _2DGame.Scripts.Item
                 _spriteRenderer.size = _spriteRendererSize;
                 _boxCollider2D.isTrigger = true;
             }
-                
-            
         }
 #if UNITY_EDITOR
         private void OnValidate()
@@ -39,13 +36,10 @@ namespace _2DGame.Scripts.Item
             gameObject.name = $"Bonus : {itemGrabbable.name}";
         }
 #endif
-    
         private void Awake()
         {
             GetDefaultValues();
-           
         }
-  
         private void OnTriggerEnter2D(Collider2D other)
         {
             // Prevent multiple OnTriggerEnter while the item is grabbed and not yet destroy
@@ -58,7 +52,6 @@ namespace _2DGame.Scripts.Item
                 OnGrab(character.Inventory);
             }
         }
-    
         public void OnGrab(InventoryScriptableObject targetInventory)
         {
             bool itemIsAddedToInventory = targetInventory.AddItem(itemGrabbable);

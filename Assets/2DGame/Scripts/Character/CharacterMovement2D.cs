@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 namespace _2DGame.Scripts.Character
 {
     [RequireComponent(typeof(Rigidbody2D))]
@@ -31,7 +30,6 @@ namespace _2DGame.Scripts.Character
             var vectorDirection = context.ReadValue<Vector2>();
             SetVelocity(vectorDirection);
         }
-
         public void Jump(InputAction.CallbackContext context)
         {
             _rigidbody2D.AddForce(_jumpForce*Vector2.up, ForceMode2D.Impulse);
