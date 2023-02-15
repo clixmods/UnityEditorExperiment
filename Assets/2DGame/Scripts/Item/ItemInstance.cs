@@ -47,9 +47,9 @@ namespace _2DGame.Scripts.Item
             {
                 return;
             }
-            if (other.TryGetComponent<ICharacter>(out var character))
+            if (other.TryGetComponent<IInventory>(out var inventory))
             {
-                OnGrab(character.Inventory);
+                OnGrab(inventory.Inventory);
             }
         }
         public void OnGrab(InventoryScriptableObject targetInventory)

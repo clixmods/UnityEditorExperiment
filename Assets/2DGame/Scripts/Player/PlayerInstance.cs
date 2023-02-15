@@ -6,7 +6,7 @@ using UnityEngine;
 namespace _2DGame.Scripts.Player
 {
     [RequireComponent((typeof(Rigidbody2D)))]
-    public class PlayerInstance : MonoBehaviour, ICharacter
+    public class PlayerInstance : MonoBehaviour, ICharacter, IInventory, IDamageable
     {
         private const string AssetNamePlayerSettingDefault = "PlayerSettingsDefault";
         private float _health = 1;
@@ -14,11 +14,7 @@ namespace _2DGame.Scripts.Player
         [SerializeField] private CharacterScriptableObject characterSettings;
         [SerializeField] private InventoryScriptableObject inventory;
         private SlotInventory _slotInventorySelected;
-        private SlotInventory _ammoSlotInventoryWeapon;
-        [SerializeField] private Rigidbody2D ammoRb;
-        [SerializeField] private Transform spawnPoint;
-        [SerializeField] private float ammoSpeed;
-        [SerializeField] private GameObject weapon;
+       
         #region Properties
         public CharacterScriptableObject CharacterSetting => characterSettings;
         public float Health => _health;
@@ -43,40 +39,24 @@ namespace _2DGame.Scripts.Player
             _slotInventorySelected = slotInventory;
             if (_slotInventorySelected.item.Type == ItemType.Weapon)
             {
-                _weaponController.SetView(_slotInventorySelected.item.SpriteWorld);
-                if (inventory.TryGetSlotFromItem(_slotInventorySelected.item.AmmoItem, out var ammoSlotInventory))
+                SlotInventory ammoSlotInventory = null;
+                if (inventory.TryGetSlotFromItem(_slotInventorySelected.item.AmmoItem, ref ammoSlotInventory ))
                 {
-                    _ammoSlotInventoryWeapon = ammoSlotInventory;
+                    _weaponController.SetWeapon(_slotInventorySelected.item.SpriteWorld,ref ammoSlotInventory.GetRefAmount());
                 }
                 else
                 {
-                    _ammoSlotInventoryWeapon = null;
+                    _weaponController.SetWeapon(_slotInventorySelected.item.SpriteWorld );
                 }
-            }
-            else
-            {
-                _weaponController.SetView(null);
-            }
-        }
-        // TODO : Move weapon behaviour in weapon controller
-        private void WeaponControllerOnEventWeaponFire()
-        {
-            if ( _ammoSlotInventoryWeapon != null && _ammoSlotInventoryWeapon.amount > 0)
-            {
-                Debug.Log("Weapon fire");
-                _ammoSlotInventoryWeapon.amount--;
-                Rigidbody2D ammo = Instantiate(ammoRb, spawnPoint.position, Quaternion.identity);
-                ammo.velocity = transform.TransformDirection(weapon.transform.localPosition * Vector2.right);
             }
         }
         public void DoDamage(int amount)
         {
-            throw new NotImplementedException();
+            _health -= amount;
         }
         private void Start()
         {
-            _weaponController = GetComponent<WeaponController>();
-            _weaponController.EventWeaponFire += WeaponControllerOnEventWeaponFire;
+            _weaponController = GetComponentInChildren<WeaponController>();
             GetDefaultValues();
             inventory.EventObjectSelect += InventoryOnEventObjectSelect;
         }

@@ -1,5 +1,9 @@
+using System;
+using _2DGame.Scripts.Item;
+using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 public class WeaponController : MonoBehaviour
@@ -8,9 +12,14 @@ public class WeaponController : MonoBehaviour
     public delegate void WeaponEvent();
     public event WeaponEvent EventWeaponFire;
     #endregion
-    [SerializeField] private GameObject _gunParent;
-    [SerializeField] private SpriteRenderer spriteRenderer;   
-    public int currentAmmo;
+    [SerializeField] private Transform _pivotFire;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    private WeaponAmmo _weaponAmmo;
+    private void Start()
+    {
+        _weaponAmmo = GetComponent<WeaponAmmo>();
+    }
+
     public void AimWeaponMouse(InputAction.CallbackContext context)
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
@@ -22,14 +31,14 @@ public class WeaponController : MonoBehaviour
     }
     public void SetAimDirection(Vector2 directionAim)
     {
-        _gunParent.transform.right = directionAim;
+        transform.right = directionAim;
         if (directionAim.x > 0)
         {
-            spriteRenderer.flipY = false;
+            _spriteRenderer.flipY = false;
         }
         else
         {
-            spriteRenderer.flipY = true;
+            _spriteRenderer.flipY = true;
         }
     }
     /// <summary>
@@ -38,19 +47,43 @@ public class WeaponController : MonoBehaviour
     /// <param name="sprite"></param>
     public void SetView(Sprite sprite)
     {
-        spriteRenderer.sprite = sprite;
+        _spriteRenderer.sprite = sprite;
         if (sprite != null)
         {
-            spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-            spriteRenderer.size = sprite.rect.size.normalized*2f;
+            _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
+            _spriteRenderer.size = sprite.rect.size.normalized*2f;
         }
     }
+
+ 
     public void ShootInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             EventWeaponFire?.Invoke();
+            WeaponControllerOnEventWeaponFire();
             Debug.Log("try to Shoot");
         }
     }
+    // TODO : Move weapon behaviour in weapon controller
+    private void WeaponControllerOnEventWeaponFire()
+    {
+        if (_weaponAmmo.CanUseBullet())
+        {
+            Debug.Log("Weapon fire");
+            Rigidbody2D ammo = Instantiate(_weaponAmmo.ProjectilePrefab, _pivotFire.position, Quaternion.identity).GetComponent<Rigidbody2D>();
+            ammo.velocity = transform.TransformDirection(_pivotFire.transform.localPosition * Vector2.right);
+        }
+    }
+    public void SetWeapon(Sprite weaponSprite, ref int ammo)
+    {
+        SetView(weaponSprite);
+        _weaponAmmo.SetAmmoFromWeapon( ref ammo);
+    }
+    public void SetWeapon(Sprite weaponSprite)
+    {
+        SetView(weaponSprite);
+        _weaponAmmo.SetAmmoFromWeapon( 0);
+    }
+   
 }

@@ -10,7 +10,7 @@ namespace _2DGame.Scripts.Item
       public event InventoryEvent EventObjectAdd;
       public event InventoryEventSelect EventObjectSelect;
       #endregion
-      [SerializeField] private SlotInventory[] slotsInventory;
+      private SlotInventory[] slotsInventory;
       [SerializeField] private int slotsAmount = 10;
       public int SlotsAmount => slotsAmount;
       public SlotInventory[] GetSlotsInventory()
@@ -49,7 +49,6 @@ namespace _2DGame.Scripts.Item
          int index = GetEmptySlotIndex();
          if (index != -1)
          {
-           // slotsInventory[index].inventoryScriptableObject = this;
             slotsInventory[index].item = itemToAdd;
             slotsInventory[index].amount++;
             EventObjectAdd?.Invoke();
@@ -77,17 +76,21 @@ namespace _2DGame.Scripts.Item
          }
          return -1;
       }
-      public bool TryGetSlotFromItem(ItemScriptableObject item, out SlotInventory slotInventory)
+      public  bool TryGetSlotFromItem(ItemScriptableObject item, ref SlotInventory slotInventory)
       {
-         slotInventory = new SlotInventory();
          int index = GetSlotIndexFromItem(item);
          if (index == -1)
          {
             return false;
          }
          // Slot exist 
-         slotInventory = slotsInventory[index];
+         slotInventory = ref GetSlotInventoryAt(index);
          return true;
+      }
+
+      private ref SlotInventory GetSlotInventoryAt(int index)
+      {
+         return ref slotsInventory[index];
       }
       public bool HasItem(ItemScriptableObject itemToCheck)
       {
@@ -103,7 +106,6 @@ namespace _2DGame.Scripts.Item
          for (int i = 0; i < slotsInventory.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
-            //slotsInventory[i].inventoryScriptableObject = this;
          }
       }
    }

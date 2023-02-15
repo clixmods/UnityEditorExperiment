@@ -2,7 +2,7 @@
 using UnityEngine;
 namespace _2DGame.Scripts.Item
 {
-    [Serializable]
+    
     public class SlotInventory
     {
         #region Events
@@ -13,7 +13,12 @@ namespace _2DGame.Scripts.Item
         #endregion
         //[SerializeField] private InventoryScriptableObject _inventoryScriptableObject;
         [SerializeField] private ItemScriptableObject _item;
-        [SerializeField] private int _amount;
+        public int _amount;
+
+        public ref int GetRefAmount()
+        {
+            return ref _amount;
+        }
         #region Properties
 
         // public InventoryScriptableObject inventoryScriptableObject

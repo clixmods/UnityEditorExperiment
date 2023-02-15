@@ -4,7 +4,7 @@ using _2DGame.Scripts.Player;
 using UnityEngine;
 namespace _2DGame.Scripts.AI
 {
-    public class AIInstance : MonoBehaviour, ICharacter
+    public class AIInstance : MonoBehaviour, ICharacter, IInventory , IDamageable
     {
         public float Health { get; }
         public void DoDamage(int amount)
