@@ -2642,6 +2642,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 112389079374115370, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Name
+      value: PanelTitleScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 112389079374115370, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2220047463169618803, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
