@@ -6,12 +6,30 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
 
 public class UIMenu : MonoBehaviour
 {
+    /// <summary>
+    /// Indicate the current active menu
+    /// </summary>
     public static UIMenu ActiveMenu { get; private set; }
+    [Tooltip("Assign the button to select when the menu is opened")]
     [SerializeField] private GameObject _firstSelectedGameObject;
+    [Header("Settings")]
+    [SerializeField] private bool closeMenuOnReleaseButton;
+    [Tooltip("The menu can be opened when an another menu is open ?")]
+    [SerializeField] private bool canBeOpenedAnywhere;
+    [Tooltip("Reopen the parent menu when the menu is closed ?")]
+    [SerializeField] private bool reopenPreviousMenuOnClose;
+    [Tooltip("The menu can erase the active menu and close it ?")]
+    [SerializeField] private bool EraseActiveMenu;
+    [Tooltip("The timescale when the menu is opened")]
+    [SerializeField] [Range(0,10)] private float timeScale = 1;
+    private float _previousTimeScale;
     private GameObject _previousMenu;
+    private double TOLERANCE = 0.05f;
+
     public bool IsOpen { get; private set; }
     // Start is called before the first frame update
     void Start()
@@ -21,33 +39,93 @@ public class UIMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        EventSystem.current.SetSelectedGameObject(_firstSelectedGameObject);
-        ActiveMenu = this;
+        if(_firstSelectedGameObject != null)
+            EventSystem.current.SetSelectedGameObject(_firstSelectedGameObject);
+        else
+        {
+            var buttonInChild = GetComponentInChildren<Button>();
+            if (buttonInChild != null)
+            {
+                EventSystem.current.SetSelectedGameObject(buttonInChild.gameObject);
+            }
+            else
+            {
+                Debug.LogError("UIMenu : _firstSelectedGameObject was not assigned, and no button are available in transform child, so please assign it", gameObject);
+            }
+        }
     }
-    public void OpenMenu(GameObject previousMenu)
+
+    public void OnOpenMenu(InputAction.CallbackContext context)
     {
-        _previousMenu = previousMenu;
-        _previousMenu.SetActive(false);
+        switch(context.phase)
+        {
+            case InputActionPhase.Started:
+                if (ActiveMenu == this && !closeMenuOnReleaseButton)
+                {
+                    this.CloseMenu(false);
+                }
+                else
+                {
+                    this.OpenMenu(null);
+                }
+                break;
+            case InputActionPhase.Canceled:
+                if(closeMenuOnReleaseButton)
+                    this.CloseMenu(false);
+                break;
+        }
+    }
+    public void OpenMenu(GameObject parentMenu = null)
+    {
+        if (!canBeOpenedAnywhere && ActiveMenu != null && parentMenu != ActiveMenu.gameObject)
+        {
+            return;
+        }
+        // Erase the current active menu to replace it
+        if (EraseActiveMenu && ActiveMenu != null && ActiveMenu != this)
+        {
+            ActiveMenu.CloseMenu();
+        }
+        ActiveMenu = this;
+        // Menu opened by a parent ? Go save it in cache
+        if (parentMenu != null)
+        {
+            _previousMenu = parentMenu;
+            _previousMenu.SetActive(false);
+        }
+        // Menu affect Timescale 
+        _previousTimeScale = Time.timeScale;
+        if (Math.Abs(Time.timeScale - 1) < TOLERANCE)
+        {
+            _previousTimeScale = Time.timeScale;
+            Time.timeScale = timeScale;
+        }
+        // Open the menu
         gameObject.SetActive(true);
         IsOpen = true;
     }
-    public static void CloseMenu()
+    public void CloseMenu(bool openPreviousMenu = false)
     {
-        if (ActiveMenu == null) 
+        if (ActiveMenu == null || !IsOpen) 
             return;
-
-        Debug.Log("CloseMenu");
-        // The top menu
-        if (ActiveMenu._previousMenu == null)
+        
+        Time.timeScale = ActiveMenu._previousTimeScale;
+        // Parent menu
+        if(_previousMenu != null)
         {
-            ActiveMenu.IsOpen = false;
-            ActiveMenu.gameObject.SetActive(false);
-            ActiveMenu = null;
+            if (openPreviousMenu)
+            {
+                _previousMenu.SetActive(true);
+            }
+            else
+            {
+                _previousMenu = null;
+            }
         }
-        else
-        {
-            ActiveMenu.gameObject.SetActive(false);
-            ActiveMenu._previousMenu.SetActive(true);
-        }
+        // Close menu
+        IsOpen = false;
+        gameObject.SetActive(false);
+        ActiveMenu = null;
+        
     }
 }
