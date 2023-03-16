@@ -1538,6 +1538,7 @@ GameObject:
   - component: {fileID: 1327962055}
   - component: {fileID: 1327962057}
   - component: {fileID: 1327962058}
+  - component: {fileID: 1327962059}
   m_Layer: 0
   m_Name: PlayerInstance
   m_TagString: Untagged
@@ -1794,7 +1795,7 @@ MonoBehaviour:
     m_ActionId: 487ebf11-c1bf-435e-ad63-33547e76e015
     m_ActionName: Game/Shoot[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -1888,6 +1889,19 @@ MonoBehaviour:
   _gunParent: {fileID: 385496929}
   spriteRenderer: {fileID: 132057699}
   currentAmmo: 0
+--- !u!114 &1327962059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327962048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7c1cbff63e5a844b722ab1fbae5562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _actionAsset: {fileID: -944628639613478452, guid: dc6419422012fb7448381bf8c5403fde, type: 3}
 --- !u!1 &1441930600
 GameObject:
   m_ObjectHideFlags: 0
@@ -2650,6 +2664,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 126216749639265789, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_ControlPath
+      value: <Mouse>/leftButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463169618800, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463169618800, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463169618800, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2220047463169618803, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2768,6 +2798,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2220047463962996024, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463962996025, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463962996025, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220047463962996025, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5217262801962920158, guid: bc51d2c6a081a3e46ba5d7371bf2c3ec, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

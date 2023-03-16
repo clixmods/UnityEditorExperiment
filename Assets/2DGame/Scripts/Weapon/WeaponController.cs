@@ -11,6 +11,11 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private GameObject _gunParent;
     [SerializeField] private SpriteRenderer spriteRenderer;   
     public int currentAmmo;
+
+    public void AimWeapon(InputAction.CallbackContext context)
+    {
+        //if(context.control.device == )
+    }
     public void AimWeaponMouse(InputAction.CallbackContext context)
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
