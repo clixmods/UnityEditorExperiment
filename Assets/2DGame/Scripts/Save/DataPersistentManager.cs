@@ -29,9 +29,6 @@ public class DataPersistentManager : MonoBehaviour
                 scriptableObjectSaveables.Add((ScriptableObjectSaveable)scriptableObjects[i]);
             }
         }
-
-        
-
     }
     public static T[] GetAssets<T>() where T : ScriptableObject
     {
@@ -49,17 +46,46 @@ public class DataPersistentManager : MonoBehaviour
 #endif
     private void Awake()
     {
-        LoadAll();
+        if (Application.isPlaying)
+        {
+            LoadAll();
+        }
     }
     
     private void OnDestroy()
     {
-        SaveAll();
+        if(!Application.isEditor)
+        {
+            SaveAll();
+        }
+        
     }
 
     [ContextMenu("Save")]
     private void SaveAll()
     {
+        var instanceSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
+        foreach (ISaveInstance saveInstance in instanceSaveable) 
+        {
+            saveInstance.OnSave(out var gamedata);
+            // string dataStr =  JsonUtility.ToJson(gamedata);
+            // get the data path of this save data
+            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + saveInstance.SaveID));
+            string jsonData = JsonUtility.ToJson(gamedata, true);
+            byte[] byteData;
+        
+            byteData = Encoding.ASCII.GetBytes(jsonData);
+
+            // create the file in the path if it doesn't exist
+            // if the file path or name does not exist, return the default SO
+            if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+            }
+            File.WriteAllBytes(dataPath, byteData);
+            Debug.Log("Save data to: " + dataPath);
+        }
+        
         foreach (var dataPersistent in scriptableObjectSaveables)
         {
             dataPersistent.OnSave(out var gamedata);
@@ -86,6 +112,42 @@ public class DataPersistentManager : MonoBehaviour
     [ContextMenu("Load All")]
     private void LoadAll()
     {
+        var instancesSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
+        
+        foreach (var instanceSaveable in instancesSaveable)
+        {
+            // get the data path of this save data
+            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + instanceSaveable.SaveID));
+
+            // if the file path or name does not exist, return the default SO
+            if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
+            {
+                Debug.LogWarning("File or path does not exist! " + dataPath);
+                continue;
+            }
+
+            // load in the save data as byte array
+            byte[] jsonDataAsBytes = null;
+
+            if (File.Exists(dataPath))
+            {
+                jsonDataAsBytes = File.ReadAllBytes(dataPath);
+                Debug.Log("<color=green>Loaded all data from: </color>" + dataPath);
+                
+                // convert the byte array to json
+                string jsonData;
+
+                // convert the byte array to json
+                jsonData = Encoding.ASCII.GetString(jsonDataAsBytes);
+                Debug.Log(jsonData);
+            
+            
+                instanceSaveable.OnLoad(jsonData);
+            }
+           
+        }
+        
+        
         foreach (var dataPersistent in scriptableObjectSaveables)
         {
             // get the data path of this save data
@@ -100,21 +162,23 @@ public class DataPersistentManager : MonoBehaviour
 
             // load in the save data as byte array
             byte[] jsonDataAsBytes = null;
-            
-              jsonDataAsBytes = File.ReadAllBytes(dataPath);
-               Debug.Log("<color=green>Loaded all data from: </color>" + dataPath);
-                
-            // convert the byte array to json
-            string jsonData;
+            if (File.Exists(dataPath))
+            {
+                jsonDataAsBytes = File.ReadAllBytes(dataPath);
+                Debug.Log("<color=green>Loaded all data from: </color>" + dataPath);
 
-            // convert the byte array to json
-            jsonData = Encoding.ASCII.GetString(jsonDataAsBytes);
-            Debug.Log(jsonData);
+                // convert the byte array to json
+                string jsonData;
 
-            // convert to the specified object type
-            GameData returnedData = JsonUtility.FromJson<GameData>(jsonData);
-            
-            dataPersistent.OnLoad(jsonData);
+                // convert the byte array to json
+                jsonData = Encoding.ASCII.GetString(jsonDataAsBytes);
+                Debug.Log(jsonData);
+
+                // convert to the specified object type
+                GameData returnedData = JsonUtility.FromJson<GameData>(jsonData);
+
+                dataPersistent.OnLoad(jsonData);
+            }
         }
     }
 }

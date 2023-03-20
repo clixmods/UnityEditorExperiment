@@ -242,6 +242,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 148016227}
   itemGrabbable: {fileID: 11400000, guid: e80af002f0e515d419f8b4f38e4939b5, type: 2}
   _boxCollider2D: {fileID: 148016225}
+  m_id: -938871940
 --- !u!61 &148016225
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -583,6 +584,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 520248256}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 520248254}
+  m_id: -376921712
 --- !u!61 &520248254
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -732,6 +734,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 677946272}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 677946270}
+  m_id: -2046180258
 --- !u!61 &677946270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -985,13 +988,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922672302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78e02369f5a407947b60ec0767da409d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scriptableObjectSaveables:
   - {fileID: 11400000, guid: b39aa0bc452c00147980a1c4901f17a5, type: 2}
+  - {fileID: 11400000, guid: 130b0e313822e5f49ab4940901f3ebc5, type: 2}
 --- !u!4 &922672304
 Transform:
   m_ObjectHideFlags: 0
@@ -1053,6 +1057,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1264288644}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 1264288642}
+  m_id: -417413954
 --- !u!61 &1264288642
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1202,6 +1207,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1290705541}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 1290705539}
+  m_id: 1696257775
 --- !u!61 &1290705539
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2044,6 +2050,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1841641391}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 1841641389}
+  m_id: -1781436006
 --- !u!61 &1841641389
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2193,6 +2200,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1922785844}
   itemGrabbable: {fileID: 11400000, guid: 2fe19bd07d433ff43af28ad2b4bde35b, type: 2}
   _boxCollider2D: {fileID: 1922785842}
+  m_id: -1980120000
 --- !u!61 &1922785842
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2342,6 +2350,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 1999479410}
   itemGrabbable: {fileID: 11400000, guid: 24597f8d5e3d15f48ae60014bed8d1d6, type: 2}
   _boxCollider2D: {fileID: 1999479411}
+  m_id: 380787763
 --- !u!212 &1999479410
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2491,6 +2500,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 2018977875}
   itemGrabbable: {fileID: 11400000, guid: 85b659f64a2d2f34b831c041f2b217cd, type: 2}
   _boxCollider2D: {fileID: 2018977876}
+  m_id: 631180863
 --- !u!212 &2018977875
 SpriteRenderer:
   m_ObjectHideFlags: 0

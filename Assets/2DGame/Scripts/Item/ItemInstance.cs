@@ -1,3 +1,5 @@
+using System;
+using Unity.Collections;
 using UnityEngine;
 namespace _2DGame.Scripts.Item
 {
@@ -5,7 +7,7 @@ namespace _2DGame.Scripts.Item
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class ItemInstance : MonoBehaviour, IGrabbable
+    public class ItemInstance : MonoBehaviour, IGrabbable , ISaveInstance
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ItemScriptableObject itemGrabbable;
@@ -25,7 +27,10 @@ namespace _2DGame.Scripts.Item
                 // Give good proportion for the sprite Icon
                 _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
                 _spriteRendererSize = itemGrabbable.Icon.rect.size.normalized;
-                _spriteRenderer.size = _spriteRendererSize;
+                if (Application.isPlaying)
+                {
+                    _spriteRenderer.size = _spriteRendererSize;
+                }
                 _boxCollider2D.isTrigger = true;
             }
         }
@@ -58,8 +63,36 @@ namespace _2DGame.Scripts.Item
             if (itemIsAddedToInventory)
             {
                 _isGrabbed = true;
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
+
+        #region Save & Load
+
+        [SerializeField] [HideInInspector] private int m_id = DataPersistentUtility.GenerateID();
+        private class ItemGameData : GameData
+        {
+            public bool IsGrabbed;
+        }
+        public void OnLoad(string data)
+        {
+            ItemGameData returnedData = JsonUtility.FromJson<ItemGameData>(data);
+            if (returnedData.IsGrabbed)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        public void OnSave(out GameData gameData)
+        {
+            ItemGameData itemGameData = new ItemGameData();
+            itemGameData.IsGrabbed = _isGrabbed;
+            gameData = itemGameData;
+            gameData.type = nameof(ItemGameData);
+        }
+        
+        public int SaveID { get => m_id; }
+
+        #endregion
     }
 }

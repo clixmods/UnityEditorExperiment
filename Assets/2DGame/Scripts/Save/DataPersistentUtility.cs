@@ -36,4 +36,9 @@ public static class DataPersistentUtility
 
         return asset;
     }
+
+    public static int GenerateID()
+    {
+        return Guid.NewGuid().GetHashCode();
+    }
 }
