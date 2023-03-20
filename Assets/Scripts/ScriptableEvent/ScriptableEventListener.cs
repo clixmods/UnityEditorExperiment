@@ -31,9 +31,9 @@ public class ScriptableEventListener : MonoBehaviour
 public class ScriptableEventListener<T> : MonoBehaviour
 {
     [SerializeField] 
-    private ScriptableEvent<T> scriptableEvent;
+    protected ScriptableEvent<T> scriptableEvent;
 
-    public UnityEvent<StringComponent> oof;
+    public UnityEvent<T> oof;
     // Start is called before the first frame update
     private void Start()
     {

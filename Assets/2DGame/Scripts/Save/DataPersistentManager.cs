@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using _2DGame.Scripts.Save;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,16 +11,13 @@ using UnityEngine.Serialization;
 [ExecuteAlways]
 public class DataPersistentManager : MonoBehaviour
 {
-    public List<ISaveData> datasPersistentSave;
-   public bool Save;
-   public bool Load;
-
+    public List<ScriptableObjectSaveable> scriptableObjectSaveables;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
         ScriptableObject[] scriptableObjects = GetAssets<ScriptableObject>();
-        datasPersistentSave = new List<ISaveData>();
+        scriptableObjectSaveables = new List<ScriptableObjectSaveable>();
         for (int i = 0; i < scriptableObjects.Length; i++)
         {
             if (scriptableObjects[i] == null) continue;
@@ -29,7 +26,7 @@ public class DataPersistentManager : MonoBehaviour
             if ( interfacesOnObject.Contains(typeof(ISaveData)) )
             {
                 Debug.Log($"Component to save found in {scriptableObjects[i].name}");
-                datasPersistentSave.Add((ISaveData)scriptableObjects[i]);
+                scriptableObjectSaveables.Add((ScriptableObjectSaveable)scriptableObjects[i]);
             }
         }
 
@@ -50,24 +47,6 @@ public class DataPersistentManager : MonoBehaviour
         return a;
     }
 #endif
-
-    private void Update()
-    {
-        if (Save)
-        {
-            OnValidate();
-            SaveAll();
-            Save = false;
-        }
-        if(Load)
-        {
-            OnValidate();
-            SaveAll();
-            Load = false;
-        }
-    }
-    
-
     private void Awake()
     {
         LoadAll();
@@ -81,12 +60,12 @@ public class DataPersistentManager : MonoBehaviour
     [ContextMenu("Save")]
     private void SaveAll()
     {
-        foreach (var dataPersistent in datasPersistentSave)
+        foreach (var dataPersistent in scriptableObjectSaveables)
         {
             dataPersistent.OnSave(out var gamedata);
             // string dataStr =  JsonUtility.ToJson(gamedata);
             // get the data path of this save data
-            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + dataPersistent.GetType().Name));
+            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + dataPersistent.name));
             string jsonData = JsonUtility.ToJson(gamedata, true);
             byte[] byteData;
         
@@ -107,15 +86,16 @@ public class DataPersistentManager : MonoBehaviour
     [ContextMenu("Load All")]
     private void LoadAll()
     {
-        foreach (var dataPersistent in datasPersistentSave)
+        foreach (var dataPersistent in scriptableObjectSaveables)
         {
             // get the data path of this save data
-            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + dataPersistent.GetType().Name));
+            string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + dataPersistent.name));
 
             // if the file path or name does not exist, return the default SO
             if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
             {
                 Debug.LogWarning("File or path does not exist! " + dataPath);
+                continue;
             }
 
             // load in the save data as byte array
@@ -135,18 +115,6 @@ public class DataPersistentManager : MonoBehaviour
             GameData returnedData = JsonUtility.FromJson<GameData>(jsonData);
             
             dataPersistent.OnLoad(jsonData);
-            
-            
-            
-   
         }
     }
-}
-
-
-
-[Serializable]
-public class GameData
-{
-    public string type;
 }

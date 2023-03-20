@@ -1,9 +1,10 @@
 using System;
+using _2DGame.Scripts.Save;
 using UnityEngine;
 namespace _2DGame.Scripts.Item
 {
    [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
-   public class InventoryScriptableObject : ScriptableObject , ISaveData
+   public class InventoryScriptableObject : ScriptableObjectSaveable 
    {
       #region Events
       public delegate void InventoryEvent();
@@ -108,39 +109,34 @@ namespace _2DGame.Scripts.Item
          }
       }
 
+      
+
+      #region Save and Load
       class SlotsInventory : GameData
       {
          [Serializable]
          public struct slot
          {
-            public string typeName;
+            public string resourcesFileName;
             public int value;
          }
          public slot[] slots;
       }
-      
-
-      public void OnLoad(string data)
+      public override void OnLoad(string data)
       {
          SlotsInventory returnedData = JsonUtility.FromJson<SlotsInventory>(data);
          slotsInventory = new SlotInventory[returnedData.slots.Length];
          for (int i = 0; i < returnedData.slots.Length; i++)
          {
-            if (slotsInventory[i] != null)
-            {
-               slotsInventory[i].amount = returnedData.slots[i].value;
-               var shit = returnedData.slots[i];
-               string name = shit.typeName;
-               slotsInventory[i].item = Resources.Load<ItemScriptableObject>(shit.typeName);
-            }
-           
+            slotsInventory[i] = new SlotInventory();
+            slotsInventory[i].amount = returnedData.slots[i].value;
+            var shit = returnedData.slots[i];
+            string shitResourcesFileName = shit.resourcesFileName;
+            slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(shitResourcesFileName);
          }
-
-         
       }
       
-
-      public void OnSave(out GameData gameData)
+      public override void OnSave(out GameData gameData)
       {
          SlotsInventory slotsToSave = new SlotsInventory();
          slotsToSave.slots = new SlotsInventory.slot[slotsInventory.Length] ;
@@ -148,13 +144,16 @@ namespace _2DGame.Scripts.Item
          {
             var item = slotsInventory[i].item;
             if(item != null)
-               slotsToSave.slots[i].typeName = item.ToString();
+               slotsToSave.slots[i].resourcesFileName = DataPersistentUtility.ExtractAssetName(item);
             
             slotsToSave.slots[i].value = slotsInventory[i].amount;
          }
          gameData = slotsToSave;
          gameData.type = nameof(SlotsInventory);
       }
-      
+
+
+      #endregion
+     
    }
 }
