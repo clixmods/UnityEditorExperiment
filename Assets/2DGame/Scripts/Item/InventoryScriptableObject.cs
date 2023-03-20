@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 namespace _2DGame.Scripts.Item
 {
    [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
-   public class InventoryScriptableObject : ScriptableObject
+   public class InventoryScriptableObject : ScriptableObject , ISaveData
    {
       #region Events
       public delegate void InventoryEvent();
@@ -106,5 +107,54 @@ namespace _2DGame.Scripts.Item
             //slotsInventory[i].inventoryScriptableObject = this;
          }
       }
+
+      class SlotsInventory : GameData
+      {
+         [Serializable]
+         public struct slot
+         {
+            public string typeName;
+            public int value;
+         }
+         public slot[] slots;
+      }
+      
+
+      public void OnLoad(string data)
+      {
+         SlotsInventory returnedData = JsonUtility.FromJson<SlotsInventory>(data);
+         slotsInventory = new SlotInventory[returnedData.slots.Length];
+         for (int i = 0; i < returnedData.slots.Length; i++)
+         {
+            if (slotsInventory[i] != null)
+            {
+               slotsInventory[i].amount = returnedData.slots[i].value;
+               var shit = returnedData.slots[i];
+               string name = shit.typeName;
+               slotsInventory[i].item = Resources.Load<ItemScriptableObject>(shit.typeName);
+            }
+           
+         }
+
+         
+      }
+      
+
+      public void OnSave(out GameData gameData)
+      {
+         SlotsInventory slotsToSave = new SlotsInventory();
+         slotsToSave.slots = new SlotsInventory.slot[slotsInventory.Length] ;
+         for (int i = 0; i < slotsInventory.Length; i++)
+         {
+            var item = slotsInventory[i].item;
+            if(item != null)
+               slotsToSave.slots[i].typeName = item.ToString();
+            
+            slotsToSave.slots[i].value = slotsInventory[i].amount;
+         }
+         gameData = slotsToSave;
+         gameData.type = nameof(SlotsInventory);
+      }
+      
    }
 }
