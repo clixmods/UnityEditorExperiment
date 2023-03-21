@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [ExecuteAlways]
-public class DataPersistentManager : MonoBehaviour
+public class DataPersistentHandler : MonoBehaviour
 {
     public List<ScriptableObjectSaveable> scriptableObjectSaveables;
 
@@ -48,7 +48,7 @@ public class DataPersistentManager : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            LoadAll();
+           // LoadAll();
         }
     }
     
@@ -56,13 +56,13 @@ public class DataPersistentManager : MonoBehaviour
     {
         if(!Application.isEditor)
         {
-            SaveAll();
+           // SaveAll();
         }
         
     }
 
     [ContextMenu("Save")]
-    private void SaveAll()
+    public void SaveAll()
     {
         var instanceSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
         foreach (ISaveInstance saveInstance in instanceSaveable) 
@@ -110,7 +110,7 @@ public class DataPersistentManager : MonoBehaviour
     }
     
     [ContextMenu("Load All")]
-    private void LoadAll()
+    public void LoadAll()
     {
         var instancesSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
         
@@ -175,7 +175,7 @@ public class DataPersistentManager : MonoBehaviour
                 Debug.Log(jsonData);
 
                 // convert to the specified object type
-                GameData returnedData = JsonUtility.FromJson<GameData>(jsonData);
+                SaveData returnedData = JsonUtility.FromJson<SaveData>(jsonData);
 
                 dataPersistent.OnLoad(jsonData);
             }

@@ -112,7 +112,7 @@ namespace _2DGame.Scripts.Item
       
 
       #region Save and Load
-      class SlotsInventory : GameData
+      class SlotsInventory : SaveData
       {
          [Serializable]
          public struct slot
@@ -136,7 +136,7 @@ namespace _2DGame.Scripts.Item
          }
       }
       
-      public override void OnSave(out GameData gameData)
+      public override void OnSave(out SaveData saveData)
       {
          SlotsInventory slotsToSave = new SlotsInventory();
          slotsToSave.slots = new SlotsInventory.slot[slotsInventory.Length] ;
@@ -148,8 +148,8 @@ namespace _2DGame.Scripts.Item
             
             slotsToSave.slots[i].value = slotsInventory[i].amount;
          }
-         gameData = slotsToSave;
-         gameData.type = nameof(SlotsInventory);
+         saveData = slotsToSave;
+         //saveData.type = nameof(SlotsInventory);
       }
 
 

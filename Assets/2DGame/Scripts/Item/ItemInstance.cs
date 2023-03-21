@@ -70,25 +70,25 @@ namespace _2DGame.Scripts.Item
         #region Save & Load
 
         [SerializeField] [HideInInspector] private int m_id = DataPersistentUtility.GenerateID();
-        private class ItemGameData : GameData
+        private class ItemSaveData : SaveData
         {
             public bool IsGrabbed;
         }
         public void OnLoad(string data)
         {
-            ItemGameData returnedData = JsonUtility.FromJson<ItemGameData>(data);
+            ItemSaveData returnedData = JsonUtility.FromJson<ItemSaveData>(data);
             if (returnedData.IsGrabbed)
             {
                 gameObject.SetActive(false);
             }
         }
 
-        public void OnSave(out GameData gameData)
+        public void OnSave(out SaveData saveData)
         {
-            ItemGameData itemGameData = new ItemGameData();
-            itemGameData.IsGrabbed = _isGrabbed;
-            gameData = itemGameData;
-            gameData.type = nameof(ItemGameData);
+            ItemSaveData itemSaveData = new ItemSaveData();
+            itemSaveData.IsGrabbed = _isGrabbed;
+            saveData = itemSaveData;
+            //saveData.type = nameof(ItemSaveData);
         }
         
         public int SaveID { get => m_id; }
