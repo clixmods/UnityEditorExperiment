@@ -121,15 +121,15 @@ namespace _2DGame.Scripts.Item
       }
       public override void OnLoad(string data)
       {
-         SlotsInventorySaveData slotsInventorySaveData = JsonUtility.FromJson<SlotsInventorySaveData>(data);
-         slotsInventory = new SlotInventory[slotsInventorySaveData.slots.Length];
-         for (int i = 0; i < slotsInventorySaveData.slots.Length; i++)
+         SlotsInventorySaveData slotsInventoryLoaded = JsonUtility.FromJson<SlotsInventorySaveData>(data);
+         slotsInventory = new SlotInventory[slotsInventoryLoaded.slots.Length];
+         for (int i = 0; i < slotsInventoryLoaded.slots.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
-            slotsInventory[i].amount = slotsInventorySaveData.slots[i].value;
-            var shit = slotsInventorySaveData.slots[i];
-            string shitResourcesFileName = shit.resourcesFileName;
-            slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(shitResourcesFileName);
+            slotsInventory[i].amount = slotsInventoryLoaded.slots[i].value;
+            var slot = slotsInventoryLoaded.slots[i];
+            string resourcesFileName = slot.resourcesFileName;
+            slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(resourcesFileName);
          }
       }
       
