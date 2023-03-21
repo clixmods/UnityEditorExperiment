@@ -79,7 +79,6 @@ namespace _2DGame.Scripts.Item
             gameObject.SetActive(!returnedData.isGrabbed);
             _isGrabbed = returnedData.isGrabbed;
         }
-
         public override void OnSave(out SaveData saveData)
         {
             ItemSaveData itemSaveData = new ItemSaveData();

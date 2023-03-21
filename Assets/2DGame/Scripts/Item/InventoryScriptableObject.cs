@@ -127,12 +127,11 @@ namespace _2DGame.Scripts.Item
          {
             slotsInventory[i] = new SlotInventory();
             slotsInventory[i].amount = slotsInventoryLoaded.slots[i].value;
-            var slot = slotsInventoryLoaded.slots[i];
-            string resourcesFileName = slot.resourcesFileName;
+            // Get File name of the scriptableObject used in item to get it from Resources Folder
+            string resourcesFileName = slotsInventoryLoaded.slots[i].resourcesFileName;
             slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(resourcesFileName);
          }
       }
-      
       public override void OnSave(out SaveData saveData)
       {
          SlotsInventorySaveData slotsToSave = new SlotsInventorySaveData();
@@ -147,8 +146,6 @@ namespace _2DGame.Scripts.Item
          }
          saveData = slotsToSave;
       }
-
-
       #endregion
      
    }
