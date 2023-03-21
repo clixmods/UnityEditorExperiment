@@ -3,7 +3,7 @@
 namespace _2DGame.Scripts.Save
 {
     /// <summary>
-    /// ScriptableObject compatible with DataPersistantSystem
+    /// ScriptableObject compatible with DataPersistantSystem, need to be place in a Resources folder
     /// </summary>
     public abstract class ScriptableObjectSaveable : ScriptableObject, ISave
     {
