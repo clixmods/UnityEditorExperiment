@@ -2,6 +2,9 @@
 
 namespace _2DGame.Scripts.Save
 {
+    /// <summary>
+    /// A MonoBehaviour compatible with DataPersistentSystem
+    /// </summary>
     public abstract class MonoBehaviourSaveable : MonoBehaviour , ISaveInstance
     {
         [SerializeField] [HideInInspector] private int _saveID = DataPersistentUtility.GenerateID();

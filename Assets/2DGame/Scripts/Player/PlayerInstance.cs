@@ -103,10 +103,8 @@ namespace _2DGame.Scripts.Player
         public override void OnSave(out SaveData saveData)
         {
             PlayerSaveData playerSaveData = new PlayerSaveData();
-
             playerSaveData.position = transform.position;
             playerSaveData.rotation = transform.rotation;
-            
             saveData = playerSaveData;
         }
         #endregion

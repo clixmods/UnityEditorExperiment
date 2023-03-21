@@ -105,14 +105,11 @@ namespace _2DGame.Scripts.Item
          for (int i = 0; i < slotsInventory.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
-            //slotsInventory[i].inventoryScriptableObject = this;
          }
       }
-
       
-
       #region Save and Load
-      class SlotsInventory : SaveData
+      class SlotsInventorySaveData : SaveData
       {
          [Serializable]
          public struct slot
@@ -124,13 +121,13 @@ namespace _2DGame.Scripts.Item
       }
       public override void OnLoad(string data)
       {
-         SlotsInventory returnedData = JsonUtility.FromJson<SlotsInventory>(data);
-         slotsInventory = new SlotInventory[returnedData.slots.Length];
-         for (int i = 0; i < returnedData.slots.Length; i++)
+         SlotsInventorySaveData slotsInventorySaveData = JsonUtility.FromJson<SlotsInventorySaveData>(data);
+         slotsInventory = new SlotInventory[slotsInventorySaveData.slots.Length];
+         for (int i = 0; i < slotsInventorySaveData.slots.Length; i++)
          {
             slotsInventory[i] = new SlotInventory();
-            slotsInventory[i].amount = returnedData.slots[i].value;
-            var shit = returnedData.slots[i];
+            slotsInventory[i].amount = slotsInventorySaveData.slots[i].value;
+            var shit = slotsInventorySaveData.slots[i];
             string shitResourcesFileName = shit.resourcesFileName;
             slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(shitResourcesFileName);
          }
@@ -138,8 +135,8 @@ namespace _2DGame.Scripts.Item
       
       public override void OnSave(out SaveData saveData)
       {
-         SlotsInventory slotsToSave = new SlotsInventory();
-         slotsToSave.slots = new SlotsInventory.slot[slotsInventory.Length] ;
+         SlotsInventorySaveData slotsToSave = new SlotsInventorySaveData();
+         slotsToSave.slots = new SlotsInventorySaveData.slot[slotsInventory.Length] ;
          for (int i = 0; i < slotsInventory.Length; i++)
          {
             var item = slotsInventory[i].item;
@@ -149,7 +146,6 @@ namespace _2DGame.Scripts.Item
             slotsToSave.slots[i].value = slotsInventory[i].amount;
          }
          saveData = slotsToSave;
-         //saveData.type = nameof(SlotsInventory);
       }
 
 

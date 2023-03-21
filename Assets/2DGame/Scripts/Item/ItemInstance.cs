@@ -1,4 +1,5 @@
 using System;
+using _2DGame.Scripts.Save;
 using Unity.Collections;
 using UnityEngine;
 namespace _2DGame.Scripts.Item
@@ -7,7 +8,7 @@ namespace _2DGame.Scripts.Item
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class ItemInstance : MonoBehaviour, IGrabbable , ISaveInstance
+    public class ItemInstance : MonoBehaviourSaveable, IGrabbable
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ItemScriptableObject itemGrabbable;
@@ -68,31 +69,23 @@ namespace _2DGame.Scripts.Item
         }
 
         #region Save & Load
-
-        [SerializeField] [HideInInspector] private int m_id = DataPersistentUtility.GenerateID();
         private class ItemSaveData : SaveData
         {
-            public bool IsGrabbed;
+            public bool isGrabbed;
         }
-        public void OnLoad(string data)
+        public override void OnLoad(string data)
         {
             ItemSaveData returnedData = JsonUtility.FromJson<ItemSaveData>(data);
-            if (returnedData.IsGrabbed)
-            {
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(!returnedData.isGrabbed);
+            _isGrabbed = returnedData.isGrabbed;
         }
 
-        public void OnSave(out SaveData saveData)
+        public override void OnSave(out SaveData saveData)
         {
             ItemSaveData itemSaveData = new ItemSaveData();
-            itemSaveData.IsGrabbed = _isGrabbed;
+            itemSaveData.isGrabbed = _isGrabbed;
             saveData = itemSaveData;
-            //saveData.type = nameof(ItemSaveData);
         }
-        
-        public int SaveID { get => m_id; }
-
         #endregion
     }
 }
