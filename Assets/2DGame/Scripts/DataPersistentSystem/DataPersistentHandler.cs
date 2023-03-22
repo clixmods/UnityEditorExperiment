@@ -11,6 +11,10 @@ using UnityEngine.Serialization;
 [ExecuteAlways]
 public class DataPersistentHandler : MonoBehaviour
 {
+    private const string ParentFolderName = "data/";
+    
+    
+    // TODO : Resource.LoadAll is a better way, need to remove the list in the future to improve the system
     [Tooltip("Contains all scriptableObject compatible with DataPersistentSystem, required to be referenced here.")]
     public List<ScriptableObject> scriptableObjectSaveables;
 #if UNITY_EDITOR
@@ -48,9 +52,9 @@ public class DataPersistentHandler : MonoBehaviour
     [ContextMenu("Save")]
     public void SaveAll()
     {
-        var instanceSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
+        var instanceSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveMonoBehavior>();
         // Instance
-        foreach (ISaveInstance saveInstance in instanceSaveable) 
+        foreach (ISaveMonoBehavior saveInstance in instanceSaveable) 
         {
             Save(saveInstance, saveInstance.SaveID.ToString());
         }
@@ -66,7 +70,7 @@ public class DataPersistentHandler : MonoBehaviour
     [ContextMenu("Load All")]
     public void LoadAll()
     {
-        var instancesSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveInstance>();
+        var instancesSaveable = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveMonoBehavior>();
         // Instance
         foreach (var instanceSaveable in instancesSaveable)
         {
@@ -84,7 +88,7 @@ public class DataPersistentHandler : MonoBehaviour
     private static void Save(ISave save, string fileName)
     {
         save.OnSave(out var gamedata);
-        string dataPath = Path.Combine(Application.persistentDataPath, ("data/" +fileName ));
+        string dataPath = Path.Combine(Application.persistentDataPath, (ParentFolderName +fileName ));
         string jsonData = JsonUtility.ToJson(gamedata, true);
         byte[] byteData;
         byteData = Encoding.ASCII.GetBytes(jsonData);
@@ -97,7 +101,7 @@ public class DataPersistentHandler : MonoBehaviour
     }
     private static void Load(ISave save, string fileName)
     {
-        string dataPath = Path.Combine(Application.persistentDataPath, ("data/" + fileName));
+        string dataPath = Path.Combine(Application.persistentDataPath, (ParentFolderName + fileName));
         if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
         {
             Debug.LogWarning("File or path does not exist! " + dataPath);

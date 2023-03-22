@@ -3,6 +3,7 @@
 /// </summary>
 public interface ISave
 {
+  //  public bool IsDynamic { get; }
     /// <summary>
     /// Method to implement the behavior when the object has a load
     /// </summary>
@@ -14,5 +15,7 @@ public interface ISave
     /// <param name="saveData">This class will be saved, create a child class if you want have custom data</param>
     public void OnSave(out SaveData saveData);
 }
+
+
 
 

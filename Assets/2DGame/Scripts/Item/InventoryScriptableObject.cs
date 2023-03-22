@@ -131,6 +131,7 @@ namespace _2DGame.Scripts.Item
             string resourcesFileName = slotsInventoryLoaded.slots[i].resourcesFileName;
             slotsInventory[i].item = DataPersistentUtility.GetAssetFromResources<ItemScriptableObject>(resourcesFileName);
          }
+         EventObjectAdd?.Invoke();
       }
       public override void OnSave(out SaveData saveData)
       {

@@ -35,6 +35,7 @@ namespace _2DGame.Scripts.AI
         class AISaveData : SaveData
         {
             public Vector3 position;
+            
         }
         public override void OnLoad(string data)
         {

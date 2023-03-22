@@ -6,4 +6,8 @@
 public abstract class SaveData
 {
     // TODO : Add scene management ? IDK we need to see
+    public SaveData()
+    {
+        
+    }
 }

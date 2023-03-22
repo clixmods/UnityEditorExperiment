@@ -89,7 +89,7 @@ namespace _2DGame.Scripts.Player
 #endif
 
         #region Save & Load
-        class PlayerSaveData : SaveData
+        private class PlayerSaveData : SaveData
         {
             public Vector3 position;
             public Quaternion rotation;
