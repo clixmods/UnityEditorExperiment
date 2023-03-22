@@ -12,12 +12,12 @@ using UnityEngine.Serialization;
 public class DataPersistentHandler : MonoBehaviour
 {
     [Tooltip("Contains all scriptableObject compatible with DataPersistentSystem, required to be referenced here.")]
-    public List<ScriptableObjectSaveable> scriptableObjectSaveables;
+    public List<ScriptableObject> scriptableObjectSaveables;
 #if UNITY_EDITOR
     private void OnValidate()
     {
         ScriptableObject[] scriptableObjects = GetAssets<ScriptableObject>();
-        scriptableObjectSaveables = new List<ScriptableObjectSaveable>();
+        scriptableObjectSaveables = new List<ScriptableObject>();
         for (int i = 0; i < scriptableObjects.Length; i++)
         {
             if (scriptableObjects[i] == null) continue;
@@ -26,7 +26,7 @@ public class DataPersistentHandler : MonoBehaviour
             if ( interfacesOnObject.Contains(typeof(ISave)) )
             {
                 Debug.Log($"Component to save found in {scriptableObjects[i].name}");
-                scriptableObjectSaveables.Add((ScriptableObjectSaveable)scriptableObjects[i]);
+                scriptableObjectSaveables.Add((ScriptableObject)scriptableObjects[i]);
             }
         }
     }
@@ -57,7 +57,10 @@ public class DataPersistentHandler : MonoBehaviour
         // Asset
         foreach (var dataPersistent in scriptableObjectSaveables)
         {
-            Save(dataPersistent, dataPersistent.name);
+            if (dataPersistent.TryGetSaveInterface(out ISave save))
+            {
+                Save(save, dataPersistent.name);
+            }
         }
     }
     [ContextMenu("Load All")]
@@ -72,7 +75,10 @@ public class DataPersistentHandler : MonoBehaviour
         // Asset
         foreach (var dataPersistent in scriptableObjectSaveables)
         {
-            Load(dataPersistent, dataPersistent.name);
+            if (dataPersistent.TryGetSaveInterface(out ISave save))
+            {
+                Load(save, dataPersistent.name);
+            }
         }
     }
     private static void Save(ISave save, string fileName)
@@ -108,4 +114,6 @@ public class DataPersistentHandler : MonoBehaviour
             save.OnLoad(jsonData);
         }
     }
+
+    
 }

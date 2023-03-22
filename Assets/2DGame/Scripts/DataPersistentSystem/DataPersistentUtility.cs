@@ -38,4 +38,16 @@ public static class DataPersistentUtility
     {
         return Guid.NewGuid().GetHashCode();
     }
+    public static bool TryGetSaveInterface(this ScriptableObject scriptableObject,out ISave save)
+    {
+        save = null;
+        var interfacesOnObject = scriptableObject.GetType().GetInterfaces();
+        if (interfacesOnObject.Contains(typeof(ISave)))
+        {
+            save = (ISave) scriptableObject;
+            return true;
+        }
+
+        return false;
+    }
 }
