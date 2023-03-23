@@ -1,3 +1,6 @@
+using System;
+using _2DGame.Scripts.Save;
+using Unity.Collections;
 using UnityEngine;
 namespace _2DGame.Scripts.Item
 {
@@ -5,7 +8,7 @@ namespace _2DGame.Scripts.Item
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
-    public class ItemInstance : MonoBehaviour, IGrabbable
+    public class ItemInstance : MonoBehaviourSaveable, IGrabbable
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private ItemScriptableObject itemGrabbable;
@@ -25,7 +28,10 @@ namespace _2DGame.Scripts.Item
                 // Give good proportion for the sprite Icon
                 _spriteRenderer.drawMode = SpriteDrawMode.Sliced;
                 _spriteRendererSize = itemGrabbable.Icon.rect.size.normalized;
-                _spriteRenderer.size = _spriteRendererSize;
+                if (Application.isPlaying)
+                {
+                    _spriteRenderer.size = _spriteRendererSize;
+                }
                 _boxCollider2D.isTrigger = true;
             }
         }
@@ -58,8 +64,27 @@ namespace _2DGame.Scripts.Item
             if (itemIsAddedToInventory)
             {
                 _isGrabbed = true;
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
+
+        #region Save & Load
+        private class ItemSaveData : SaveData
+        {
+            public bool isGrabbed;
+        }
+        public override void OnLoad(string data)
+        {
+            ItemSaveData returnedData = JsonUtility.FromJson<ItemSaveData>(data);
+            gameObject.SetActive(!returnedData.isGrabbed);
+            _isGrabbed = returnedData.isGrabbed;
+        }
+        public override void OnSave(out SaveData saveData)
+        {
+            ItemSaveData itemSaveData = new ItemSaveData();
+            itemSaveData.isGrabbed = _isGrabbed;
+            saveData = itemSaveData;
+        }
+        #endregion
     }
 }

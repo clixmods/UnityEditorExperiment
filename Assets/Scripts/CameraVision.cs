@@ -21,8 +21,8 @@ public class CameraVision : MonoBehaviour
         var objectPosition =new Vector2( objectTarget.position.x,objectTarget.position.y);
         var cameraPosition = new Vector2(_camera.transform.position.x, _camera.transform.position.y);
     }
-
-    private void OnDrawGizmos()
+#if UNITY_EDITOR
+      private void OnDrawGizmos()
     {
         float cameraFov = _camera.fieldOfView;
         float angleA = cameraFov/2f;
@@ -93,4 +93,6 @@ public class CameraVision : MonoBehaviour
         }
 
     }
+#endif
+  
 }

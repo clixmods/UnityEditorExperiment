@@ -6,10 +6,7 @@ using UnityTemplateProjects.ScriptableEvent;
 
 public class ScriptableEventListenerString : ScriptableEventListener<string>
 {
-    [SerializeField] 
-    private ScriptableEventString scriptableEvent;
 
-    public UnityEvent<StringComponent> oof;
     // Start is called before the first frame update
     private void Start()
     {

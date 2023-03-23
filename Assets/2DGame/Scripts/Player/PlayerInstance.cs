@@ -1,12 +1,13 @@
 using System;
 using _2DGame.Scripts.Character;
 using _2DGame.Scripts.Item;
+using _2DGame.Scripts.Save;
 using UnityEngine;
 
 namespace _2DGame.Scripts.Player
 {
     [RequireComponent((typeof(Rigidbody2D)))]
-    public class PlayerInstance : MonoBehaviour, ICharacter
+    public class PlayerInstance : MonoBehaviourSaveable, ICharacter
     {
         private const string AssetNamePlayerSettingDefault = "PlayerSettingsDefault";
         private float _health = 1;
@@ -86,5 +87,27 @@ namespace _2DGame.Scripts.Player
             GetDefaultValues();
         }    
 #endif
+
+        #region Save & Load
+        private class PlayerSaveData : SaveData
+        {
+            public Vector3 position;
+            public Quaternion rotation;
+        }
+        public override void OnLoad(string data)
+        {
+            PlayerSaveData playerSaveData = JsonUtility.FromJson<PlayerSaveData>(data);
+            transform.position = playerSaveData.position;
+            transform.rotation = playerSaveData.rotation;
+        }
+        public override void OnSave(out SaveData saveData)
+        {
+            PlayerSaveData playerSaveData = new PlayerSaveData();
+            playerSaveData.position = transform.position;
+            playerSaveData.rotation = transform.rotation;
+            saveData = playerSaveData;
+        }
+        #endregion
+        
     }
 }
